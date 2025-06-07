@@ -1,0 +1,8 @@
+# Ignore all files in results directory
+*
+
+# But keep the directory structure
+!.gitignore
+
+# Optional: Allow specific documentation files
+# !README.md 

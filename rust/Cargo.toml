@@ -1,0 +1,11 @@
+[package]
+name = "parallel_mergesort"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "parallel_mergesort_rust"
+path = "parallel_mergesort.rs"
+
+[dependencies]
+rayon = "1.8" 

@@ -53,6 +53,7 @@ A comprehensive benchmark suite comparing CPU-intensive performance across multi
     ├── CLOUD_DEPLOYMENT_GUIDE.md    # Cloud deployment instructions
     ├── PARALLEL_ANALYSIS.md         # Parallel programming analysis
     ├── SHAREDARRAYBUFFER_ANALYSIS.md # SharedArrayBuffer deep dive
+    ├── CPU_SCALING_ANALYSIS.md      # CPU scaling performance analysis
     └── README_CONTAINER.md          # Container usage guide
 ```
 
@@ -448,6 +449,7 @@ The Go implementations demonstrate how algorithm choices affect performance acro
 - **[Cloud Deployment Guide](docs/CLOUD_DEPLOYMENT_GUIDE.md)** - AWS, GCP, Azure deployment
 - **[Parallel Analysis](docs/PARALLEL_ANALYSIS.md)** - Fork-Join vs Worker threads comparison  
 - **[SharedArrayBuffer Analysis](docs/SHAREDARRAYBUFFER_ANALYSIS.md)** - Deep dive into shared memory parallelism
+- **[CPU Scaling Analysis](docs/cpu_scaling_results_mac/CPU_SCALING_SUMMARY.md)** - Comprehensive parallel performance scaling across multiple CPU configurations
 - **[Container Guide](docs/README_CONTAINER.md)** - Docker usage and configuration
 
 ## 🛠️ Requirements

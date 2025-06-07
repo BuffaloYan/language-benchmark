@@ -1,0 +1,157 @@
+================================================================================
+PARALLEL IMPLEMENTATION COMPARISON REPORT
+================================================================================
+Generated: 2025-06-07 19:08:44
+Test Data: 10,000,000 random integers
+Task: Parallel merge sort + prime counting
+System: 8 CPU cores, Linux
+
+OVERALL PERFORMANCE RANKINGS:
+--------------------------------------------------------------------------------
+Rank Implementation                 Type       Exec Time    Wall Time    Speedup 
+--------------------------------------------------------------------------------
+1    Rust Rayon                     Parallel     0.1978s      0.3395s     1.00x
+2    C pthreads                     Parallel     0.2081s      0.3572s     0.95x
+3    Java Fork-Join                 Parallel     0.3835s      0.7739s     0.52x
+4    JavaScript SharedArrayBuffer   Parallel     0.7785s      1.9203s     0.25x
+5    C Sequential                   Sequential   1.1803s      1.3341s     0.17x
+6    Rust Sequential                Sequential   1.3906s      1.5399s     0.14x
+7    Java Sequential                Sequential   1.4926s      1.8822s     0.13x
+8    Go (optimized)                 Sequential   1.6610s      2.0403s     0.12x
+9    Go (original)                  Sequential   1.8007s      2.3972s     0.11x
+10   JavaScript Sequential          Sequential   1.9760s      3.1844s     0.10x
+11   JavaScript Workers             Parallel     2.4050s      3.5046s     0.08x
+
+PARALLEL EFFICIENCY ANALYSIS:
+--------------------------------------------------------------------------------
+
+Java:
+  Parallel Implementation: Java Fork-Join
+  Sequential Time:    1.4926s
+  Parallel Time:      0.3835s
+  Speedup:              3.89x
+  Parallel Efficiency:  48.7%
+
+C:
+  Parallel Implementation: C pthreads
+  Sequential Time:    1.1803s
+  Parallel Time:      0.2081s
+  Speedup:              5.67x
+  Parallel Efficiency:  70.9%
+
+Rust:
+  Parallel Implementation: Rust Rayon
+  Sequential Time:    1.3906s
+  Parallel Time:      0.1978s
+  Speedup:              7.03x
+  Parallel Efficiency:  87.9%
+
+JavaScript:
+  Parallel Implementation: JavaScript Workers
+  Sequential Time:    1.9760s
+  Parallel Time:      2.4050s
+  Speedup:              0.82x
+  Parallel Efficiency:  10.3%
+
+JavaScript Parallel Approaches Comparison:
+  Sequential:         1.9760s (baseline)
+  Worker Threads:     2.4050s (speedup: 0.82x, efficiency: 10.3%)
+  SharedArrayBuffer:   0.7785s (speedup: 2.54x, efficiency: 31.7%)
+
+Go Algorithm Comparison (Single-threaded):
+  Original Algorithm:     1.8007s (memory allocating)
+  Optimized Algorithm:    1.6610s (in-place)
+  Improvement:               7.8% (1.08x speedup)
+
+DETAILED RESULTS:
+--------------------------------------------------------------------------------
+
+Java Fork-Join:
+  Status: SUCCESS
+  Execution Time:   0.3835 seconds
+  Wall Clock Time:   0.7739 seconds
+  CPU Cores Used: 8
+  Parallelism Level: 8
+
+C pthreads:
+  Status: SUCCESS
+  Execution Time:   0.2081 seconds
+  Wall Clock Time:   0.3572 seconds
+  CPU Cores Used: 8
+
+Rust Rayon:
+  Status: SUCCESS
+  Execution Time:   0.1978 seconds
+  Wall Clock Time:   0.3395 seconds
+  CPU Cores Used: 8
+  Workers/Threads: 8
+
+JavaScript Workers:
+  Status: SUCCESS
+  Execution Time:   2.4050 seconds
+  Wall Clock Time:   3.5046 seconds
+  CPU Cores Used: 8
+  Workers/Threads: 8
+
+JavaScript SharedArrayBuffer:
+  Status: SUCCESS
+  Execution Time:   0.7785 seconds
+  Wall Clock Time:   1.9203 seconds
+  CPU Cores Used: 8
+  Workers/Threads: 8
+
+Java Sequential:
+  Status: SUCCESS
+  Execution Time:   1.4926 seconds
+  Wall Clock Time:   1.8822 seconds
+
+Go (original):
+  Status: SUCCESS
+  Execution Time:   1.8007 seconds
+  Wall Clock Time:   2.3972 seconds
+
+Go (optimized):
+  Status: SUCCESS
+  Execution Time:   1.6610 seconds
+  Wall Clock Time:   2.0403 seconds
+
+C Sequential:
+  Status: SUCCESS
+  Execution Time:   1.1803 seconds
+  Wall Clock Time:   1.3341 seconds
+
+Rust Sequential:
+  Status: SUCCESS
+  Execution Time:   1.3906 seconds
+  Wall Clock Time:   1.5399 seconds
+
+JavaScript Sequential:
+  Status: SUCCESS
+  Execution Time:   1.9760 seconds
+  Wall Clock Time:   3.1844 seconds
+
+PERFORMANCE SUMMARY:
+--------------------------------------------------------------------------------
+Execution Times:
+  Fastest:   0.1978s
+  Slowest:   2.4050s
+  Average:   1.2249s
+  Range:      12.16x difference
+
+Wall Clock Times:
+  Fastest:   0.3395s
+  Slowest:   3.5046s
+  Average:   1.7521s
+  Range:      10.32x difference
+
+SYSTEM INFORMATION:
+--------------------------------------------------------------------------------
+CPU Cores: 8
+Platform: Linux
+OS: Linux 6.10.14-linuxkit
+Architecture: aarch64
+Python Version: 3.11.0rc1
+
+================================================================================
+End of Report
+================================================================================

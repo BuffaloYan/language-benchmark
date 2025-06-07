@@ -1,0 +1,102 @@
+{
+  "timestamp": "2025-06-06T22:18:30.859926",
+  "system_info": {
+    "cpu_cores": 12,
+    "platform": "Darwin",
+    "python_version": "3.11.11"
+  },
+  "results": {
+    "Java Fork-Join": {
+      "success": true,
+      "execution_time": 0.2627,
+      "wall_time": 0.7499051094055176,
+      "stdout": "\ud83d\ude80 Java Parallel Merge Sort + Prime Counting\n============================================\nAvailable processors: 12\nSequential threshold: 1000 elements\n\n\ud83d\udcca Loading data...\nLoaded 10,000,000 numbers\n\ud83d\udd04 Starting parallel merge sort...\n\u2705 Parallel merge sort completed in 0.1753 seconds\n\ud83d\udd0d Sorting verified: true\n\ud83d\udd22 Starting parallel prime counting...\n\u2705 Parallel prime counting completed in 0.0875 seconds\n\ud83c\udfaf Found 665,451 prime numbers\n\u23f1\ufe0f  Total execution time: 0.2627 seconds\n\n\ud83d\udcc8 Performance Details:\n- Pool parallelism: 12\n- Active thread count: 0\n- Steal count: 68\n",
+      "parallelism_info": {
+        "cores": 12,
+        "parallelism": 12,
+        "steal_count": 68
+      }
+    },
+    "C pthreads": {
+      "success": true,
+      "execution_time": 0.1669,
+      "wall_time": 0.5196099281311035,
+      "stdout": "\ud83d\ude80 C Parallel Merge Sort + Prime Counting\n=========================================\nAvailable processors: 12\nMax recursion depth: 5\nSequential threshold: 1000 elements\n\n\ud83d\udcca Loading data...\nLoaded 10000000 numbers\n\ud83d\udd04 Starting parallel merge sort...\n\u2705 Parallel merge sort completed in 0.0835 seconds\n\ud83d\udd0d Sorting verified: true\n\ud83d\udd22 Starting parallel prime counting...\n\u2705 Parallel prime counting completed in 0.0834 seconds\n\ud83d\udcca Found 665451 prime numbers\n\u23f1\ufe0f  Total execution time: 0.1669 seconds\n\n\ud83d\udcc8 Performance Analysis:\n- Sort time: 0.0835 seconds\n- Prime time: 0.0834 seconds\n- Total time: 0.1669 seconds\n- CPU cores used: 12\n",
+      "parallelism_info": {
+        "cores": 12
+      }
+    },
+    "Rust Rayon": {
+      "success": true,
+      "execution_time": 0.1957,
+      "wall_time": 0.3932936191558838,
+      "stdout": "\ud83e\udd80 Rust Parallel Merge Sort + Prime Counting\n============================================\nAvailable CPU cores: 12\nParallel threshold: 10,000 elements\n\n\ud83d\udcca Loading data...\nLoaded 10000000 numbers\n\ud83d\udd04 Starting parallel merge sort...\n\u2705 Parallel merge sort completed in 0.0987 seconds\n\ud83d\udd0d Sorting verified: true\n\ud83d\udd22 Starting parallel prime counting...\n\u2705 Parallel prime counting completed in 0.0970 seconds\n\ud83c\udfaf Found 665451 prime numbers\n\u23f1\ufe0f  Total execution time: 0.1957 seconds\n\n\ud83d\udcc8 Performance Details:\n- Rayon thread pool size: 12\n- Sequential threshold: 10,000 elements\n- Sort time: 0.0987s\n- Prime time: 0.0970s\n",
+      "parallelism_info": {
+        "cores": 12,
+        "workers": 12
+      }
+    },
+    "JavaScript Workers": {
+      "success": true,
+      "execution_time": 2.308,
+      "wall_time": 3.210954189300537,
+      "stdout": "\ud83d\udd27 Creating worker pool with 12 workers\n\ud83d\ude80 JavaScript Parallel Merge Sort + Prime Counting\n===================================================\nAvailable CPU cores: 12\nWorker pool size: 12\nParallel threshold: 10,000 elements\n\n\ud83d\udcca Loading data...\nLoaded 10,000,000 numbers\n\ud83d\udd04 Starting parallel merge sort...\n\u2705 Parallel merge sort completed in 2.0980 seconds\n\ud83d\udd0d Sorting verified: true\n\ud83d\udd22 Starting parallel prime counting...\n\ud83d\udce6 Divided into 12 chunks for prime counting\n\u2705 Parallel prime counting completed in 0.2100 seconds\n\ud83c\udfaf Found 665,451 prime numbers\n\u23f1\ufe0f  Total execution time: 2.3080 seconds\n\n\ud83d\udcc8 Performance Details:\n- Active workers: 12\n- Completed tasks: 12\n",
+      "parallelism_info": {
+        "cores": 12,
+        "workers": 12
+      }
+    },
+    "JavaScript SharedArrayBuffer": {
+      "success": true,
+      "execution_time": 0.711,
+      "wall_time": 1.5437328815460205,
+      "stdout": "\ud83d\ude80 JavaScript SharedArrayBuffer Parallel Merge Sort + Prime Counting\n====================================================================\nAvailable CPU cores: 12\n\ud83d\udcca Loading data...\nLoaded 10,000,000 numbers\n\ud83d\udd27 SharedArrayBuffer Setup:\n   - Data size: 10,000,000 integers\n   - Workers: 8\n   - Sequential threshold: 50,000\n   - Shared memory: 38.1 MB\n\n\ud83d\udd04 Starting SharedArrayBuffer parallel merge sort...\n\u2705 Parallel merge sort completed in 0.5346 seconds\n\ud83d\udd0d Sorting verified: true\n\n\ud83d\udd22 Starting SharedArrayBuffer parallel prime counting...\n\u2705 Parallel prime counting completed in 0.1764 seconds\n\ud83c\udfaf Found 665,451 prime numbers\n\n\u23f1\ufe0f  Total execution time: 0.7110 seconds\n\n\ud83d\udcc8 Performance Details:\n- Workers used: 8\n- Sequential threshold: 50,000\n- Shared memory size: 38.1 MB\n- Sort time: 0.5346s\n- Prime time: 0.1764s\n",
+      "parallelism_info": {
+        "cores": 12,
+        "workers": 8
+      }
+    },
+    "Java Sequential": {
+      "success": true,
+      "execution_time": 1.558,
+      "wall_time": 2.0131571292877197,
+      "stdout": "Loading data...\nLoaded 10,000,000 numbers\nStarting merge sort...\nJava merge sort completed in 0.9846 seconds\nSorting verified: true\nCounting prime numbers...\nPrime counting completed in 0.5735 seconds\nFound 665,451 prime numbers\nTotal execution time: 1.5580 seconds\n",
+      "parallelism_info": {}
+    },
+    "Go (original)": {
+      "success": true,
+      "execution_time": 1.2685,
+      "wall_time": 1.6405808925628662,
+      "stdout": "Loading data...\nLoaded 10000000 numbers\nStarting merge sort...\nGo merge sort completed in 0.8122 seconds\nSorting verified: true\nCounting prime numbers...\nPrime counting completed in 0.4562 seconds\nFound 665451 prime numbers\nTotal execution time: 1.2685 seconds\n",
+      "parallelism_info": {}
+    },
+    "Go (optimized)": {
+      "success": true,
+      "execution_time": 1.183,
+      "wall_time": 1.5439112186431885,
+      "stdout": "Loading data...\nLoaded 10000000 numbers\nStarting merge sort...\nGo optimized merge sort completed in 0.7265 seconds\nSorting verified: true\nCounting prime numbers...\nPrime counting completed in 0.4565 seconds\nFound 665451 prime numbers\nTotal execution time: 1.1830 seconds\n",
+      "parallelism_info": {}
+    },
+    "C Sequential": {
+      "success": true,
+      "execution_time": 1.0137,
+      "wall_time": 1.3243091106414795,
+      "stdout": "Loading data...\nLoaded 10000000 numbers\nStarting merge sort...\nC merge sort completed in 0.4725 seconds\nSorting verified: true\nCounting prime numbers...\nPrime counting completed in 0.5413 seconds\nFound 665451 prime numbers\nTotal execution time: 1.0137 seconds\n",
+      "parallelism_info": {}
+    },
+    "Rust Sequential": {
+      "success": true,
+      "execution_time": 1.2825,
+      "wall_time": 1.5796010494232178,
+      "stdout": "Loading data...\nLoaded 10000000 numbers\nStarting merge sort...\nRust merge sort completed in 0.7439 seconds\nSorting verified: true\nCounting prime numbers...\nPrime counting completed in 0.5386 seconds\nFound 665451 prime numbers\nTotal execution time: 1.2825 seconds\n",
+      "parallelism_info": {}
+    },
+    "JavaScript Sequential": {
+      "success": true,
+      "execution_time": 2.905,
+      "wall_time": 3.7265701293945312,
+      "stdout": "Loading data...\nLoaded 10,000,000 numbers\nStarting merge sort...\nJavaScript merge sort completed in 1.9920 seconds\nSorting verified: true\nCounting prime numbers...\nPrime counting completed in 0.9130 seconds\nFound 665,451 prime numbers\nTotal execution time: 2.9050 seconds\n",
+      "parallelism_info": {}
+    }
+  }
+}

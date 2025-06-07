@@ -1,0 +1,62 @@
+============================================================
+MERGE SORT LANGUAGE BENCHMARK REPORT
+============================================================
+Generated: 2025-06-06 22:20:14
+Test Data: 10,000,000 random integers
+
+EXECUTION TIME RESULTS:
+----------------------------------------
+1. C              1.0104s (wall: 1.3137s) [ 1.00x]
+2. Go (optimized)   1.1823s (wall: 1.5398s) [ 1.17x]
+3. Go (original)   1.2562s (wall: 1.6474s) [ 1.24x]
+4. Rust           1.2712s (wall: 1.5783s) [ 1.26x]
+5. Java           1.5122s (wall: 1.9537s) [ 1.50x]
+6. JavaScript     2.9110s (wall: 3.7423s) [ 2.88x]
+
+DETAILED RESULTS:
+----------------------------------------
+
+JavaScript:
+  Status: ✓ Success
+  Execution Time: 2.9110 seconds
+  Wall Clock Time: 3.7423 seconds
+
+Java:
+  Status: ✓ Success
+  Execution Time: 1.5122 seconds
+  Wall Clock Time: 1.9537 seconds
+
+Go (original):
+  Status: ✓ Success
+  Execution Time: 1.2562 seconds
+  Wall Clock Time: 1.6474 seconds
+
+Go (optimized):
+  Status: ✓ Success
+  Execution Time: 1.1823 seconds
+  Wall Clock Time: 1.5398 seconds
+
+Rust:
+  Status: ✓ Success
+  Execution Time: 1.2712 seconds
+  Wall Clock Time: 1.5783 seconds
+
+C:
+  Status: ✓ Success
+  Execution Time: 1.0104 seconds
+  Wall Clock Time: 1.3137 seconds
+
+SYSTEM INFORMATION:
+----------------------------------------
+OS: Darwin 24.1.0
+Architecture: arm64
+Python Version: 3.11.11
+
+PERFORMANCE ANALYSIS:
+----------------------------------------
+Fastest: 1.0104s
+Slowest: 2.9110s
+Average: 1.5239s
+Range: 2.88x difference
+
+============================================================

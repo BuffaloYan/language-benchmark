@@ -268,7 +268,7 @@ def generate_parallel_report(results, sys_info, successful_results):
             impl_type = "Parallel" if (
                 'parallel' in name.lower() or 'fork' in name.lower() or 
                 'worker' in name.lower() or 'sharedarraybuffer' in name.lower() or
-                'rayon' in name.lower()
+                'rayon' in name.lower() or 'pthreads' in name.lower()
             ) else "Sequential"
             
             report.append(f"{rank:<4} {name:<30} {impl_type:<10} {exec_time:>8.4f}s    {wall_time:>8.4f}s    {speedup:>5.2f}x")
@@ -280,7 +280,7 @@ def generate_parallel_report(results, sys_info, successful_results):
         parallel_results = {k: v for k, v in successful_results.items() 
                           if 'parallel' in k.lower() or 'fork' in k.lower() or 
                              'worker' in k.lower() or 'sharedarraybuffer' in k.lower() or
-                             'rayon' in k.lower()}
+                             'rayon' in k.lower() or 'pthreads' in k.lower()}
         sequential_results = {k: v for k, v in successful_results.items() 
                             if 'sequential' in k.lower()}
         
@@ -533,7 +533,7 @@ def main():
         print(f"\n[ANALYSIS] PARALLEL EFFICIENCY ANALYSIS:")
         print("-" * 40)
         
-        parallel_results = {k: v for k, v in successful_results.items() if 'parallel' in k.lower() or 'fork' in k.lower() or 'worker' in k.lower() or 'sharedarraybuffer' in k.lower() or 'rayon' in k.lower()}
+        parallel_results = {k: v for k, v in successful_results.items() if 'parallel' in k.lower() or 'fork' in k.lower() or 'worker' in k.lower() or 'sharedarraybuffer' in k.lower() or 'rayon' in k.lower() or 'pthreads' in k.lower()}
         sequential_results = {k: v for k, v in successful_results.items() if 'sequential' in k.lower()}
         
         # Java analysis

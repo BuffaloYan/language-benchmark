@@ -17,6 +17,24 @@ services:
         reservations:
           cpus: '4.0'
           memory: 4G
+
+    # Alternative CPU configurations (uncomment to use):
+    # For 2-core testing:
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: '2.0'
+    #       memory: 4G
+    #
+    # For single-core testing:
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: '1.0'
+    #       memory: 2G
+    #
+    # For specific CPU cores:
+    # cpuset: "0,1,2,3"  # Use only cores 0-3
     
     # Environment variables
     environment:
@@ -54,6 +72,82 @@ services:
     networks:
       - benchmark-network
     restart: unless-stopped
+
+  # CPU scaling tests - uncomment to run specific configurations
+  benchmark-1core:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: language-benchmark:latest
+    container_name: benchmark-1core
+    profiles: ["testing"]  # Only runs when specifically requested
+    
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2G
+    
+    environment:
+      - BENCHMARK_MODE=full
+      - DATA_SIZE=10000000
+      - OUTPUT_FORMAT=json
+      
+    volumes:
+      - ./results/1core:/benchmark/results
+      
+    networks:
+      - benchmark-network
+
+  benchmark-2core:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: language-benchmark:latest
+    container_name: benchmark-2core
+    profiles: ["testing"]
+    
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 4G
+    
+    environment:
+      - BENCHMARK_MODE=full
+      - DATA_SIZE=10000000
+      - OUTPUT_FORMAT=json
+      
+    volumes:
+      - ./results/2core:/benchmark/results
+      
+    networks:
+      - benchmark-network
+
+  benchmark-4core:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: language-benchmark:latest
+    container_name: benchmark-4core
+    profiles: ["testing"]
+    
+    deploy:
+      resources:
+        limits:
+          cpus: '4.0'
+          memory: 8G
+    
+    environment:
+      - BENCHMARK_MODE=full
+      - DATA_SIZE=10000000
+      - OUTPUT_FORMAT=json
+      
+    volumes:
+      - ./results/4core:/benchmark/results
+      
+    networks:
+      - benchmark-network
 
 networks:
   benchmark-network:

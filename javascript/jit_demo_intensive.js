@@ -61,7 +61,7 @@ function getV8Flags() {
 }
 
 function runCPUIntensiveBenchmark() {
-    console.log("🔥 CPU-Intensive JIT Benchmark");
+    console.log("[JIT-INTENSIVE] CPU-Intensive JIT Benchmark");
     console.log(`Configuration: ${getV8Flags()}`);
     console.log("=" * 40);
     

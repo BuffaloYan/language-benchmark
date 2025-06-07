@@ -1,0 +1,6 @@
+target/
+mergesort_rust
+mergesort_rust.exe
+mergesort_rust.pdb
+parallel_mergesort_rust
+parallel_mergesort_rust.exe

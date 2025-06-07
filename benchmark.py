@@ -189,7 +189,7 @@ class LanguageBenchmark:
         """Run benchmarks for all languages"""
         benchmarks = [
             # ("Python", [sys.executable, "python/mergesort_python.py", self.data_file]),
-            ("JavaScript", ["node", "javascript/mergesort_javascript.js", self.data_file]),
+            ("JavaScript", ["node", "javascript/mergesort_optimized.js", self.data_file]),
             ("Java", ["java", "-cp", "java", "MergeSort", self.data_file]),
             ("Go (original)", ["./go/mergesort_go", self.data_file]),
             ("Go (optimized)", ["./go/mergesort_go_optimized", self.data_file]),

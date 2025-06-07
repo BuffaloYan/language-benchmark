@@ -66,7 +66,7 @@ function loadData(filename = "test_data.csv") {
 }
 
 function warmUpJIT(numbers) {
-    console.log("🔥 JIT Warm-up phase...");
+    console.log("[JIT] JIT Warm-up phase...");
     
     // Warm up with smaller dataset to trigger JIT compilation
     const warmupSize = Math.min(100000, numbers.length);
@@ -114,7 +114,7 @@ function main() {
     
     // Main benchmark
     console.log("Starting main benchmark...");
-    console.log("🔄 Sorting phase...");
+    console.log("[SORT] Sorting phase...");
     const sortStartTime = Date.now();
     const sortedNumbers = mergeSort([...numbers]);
     const sortEndTime = Date.now();

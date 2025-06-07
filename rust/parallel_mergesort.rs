@@ -107,7 +107,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args: Vec<String> = env::args().collect();
     let filename = args.get(1).map(|s| s.as_str()).unwrap_or("test_data.csv");
 
-    println!("🦀 Rust Parallel Merge Sort + Prime Counting");
+    println!("[RUST-RAYON] Rust Parallel Merge Sort + Prime Counting");
     println!("============================================");
     
     // Display system information
@@ -117,25 +117,25 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!();
 
     // Load data
-    println!("📊 Loading data...");
+    println!("[DATA] Loading data...");
     let mut numbers = load_data(filename)?;
     println!("Loaded {} numbers", numbers.len());
 
     // Time the parallel sorting
-    println!("🔄 Starting parallel merge sort...");
+    println!("[SORT] Starting parallel merge sort...");
     let start_time = Instant::now();
     parallel_merge_sort(&mut numbers);
     let sort_end_time = Instant::now();
 
     let sort_time = sort_end_time.duration_since(start_time);
-    println!("✅ Parallel merge sort completed in {:.4} seconds", sort_time.as_secs_f64());
+    println!("[SUCCESS] Parallel merge sort completed in {:.4} seconds", sort_time.as_secs_f64());
 
     // Verify sorting is correct
     let sorted = is_sorted(&numbers);
-    println!("🔍 Sorting verified: {}", sorted);
+    println!("[VERIFY] Sorting verified: {}", sorted);
 
     // Count prime numbers in parallel
-    println!("🔢 Starting parallel prime counting...");
+    println!("[PRIMES] Starting parallel prime counting...");
     let prime_start_time = Instant::now();
     let prime_count = parallel_count_primes(&numbers);
     let prime_end_time = Instant::now();
@@ -143,12 +143,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let prime_time = prime_end_time.duration_since(prime_start_time);
     let total_time = sort_time + prime_time;
 
-    println!("✅ Parallel prime counting completed in {:.4} seconds", prime_time.as_secs_f64());
-    println!("🎯 Found {} prime numbers", prime_count);
-    println!("⏱️  Total execution time: {:.4} seconds", total_time.as_secs_f64());
+    println!("[SUCCESS] Parallel prime counting completed in {:.4} seconds", prime_time.as_secs_f64());
+    println!("[RESULT] Found {} prime numbers", prime_count);
+    println!("[TIME] Total execution time: {:.4} seconds", total_time.as_secs_f64());
 
     println!();
-    println!("📈 Performance Details:");
+    println!("[PERFORMANCE] Performance Details:");
     println!("- Rayon thread pool size: {}", num_threads);
     println!("- Sequential threshold: 10,000 elements");
     println!("- Sort time: {:.4}s", sort_time.as_secs_f64());

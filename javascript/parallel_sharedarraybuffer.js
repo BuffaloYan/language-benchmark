@@ -274,13 +274,13 @@ async function main() {
     
     const filename = process.argv[2] || 'test_data.csv';
     
-    console.log('🚀 JavaScript SharedArrayBuffer Parallel Merge Sort + Prime Counting');
+    console.log('[SHAREDARRAYBUFFER] JavaScript SharedArrayBuffer Parallel Merge Sort + Prime Counting');
     console.log('====================================================================');
     console.log(`Available CPU cores: ${os.cpus().length}`);
     
     try {
         // Load data
-        console.log('📊 Loading data...');
+        console.log('[DATA] Loading data...');
         const csvData = fs.readFileSync(filename, 'utf8').trim();
         const numbers = csvData.split(',').map(num => parseInt(num.trim(), 10));
         console.log(`Loaded ${numbers.length.toLocaleString()} numbers`);
@@ -289,25 +289,25 @@ async function main() {
         const sorter = new SharedArrayBufferMergeSort(numbers);
         
         // Parallel merge sort
-        console.log('\n🔄 Starting SharedArrayBuffer parallel merge sort...');
+        console.log('\n[SORT] Starting SharedArrayBuffer parallel merge sort...');
         const sortTime = await sorter.parallelSort();
-        console.log(`✅ Parallel merge sort completed in ${sortTime.toFixed(4)} seconds`);
+        console.log(`[SUCCESS] Parallel merge sort completed in ${sortTime.toFixed(4)} seconds`);
         
         // Verify sorting
         const sorted = sorter.isSorted();
-        console.log(`🔍 Sorting verified: ${sorted}`);
+        console.log(`[VERIFY] Sorting verified: ${sorted}`);
         
         // Parallel prime counting
-        console.log('\n🔢 Starting SharedArrayBuffer parallel prime counting...');
+        console.log('\n[PRIMES] Starting SharedArrayBuffer parallel prime counting...');
         const { primeCount, primeTime } = await sorter.parallelPrimeCount();
-        console.log(`✅ Parallel prime counting completed in ${primeTime.toFixed(4)} seconds`);
-        console.log(`🎯 Found ${primeCount.toLocaleString()} prime numbers`);
+        console.log(`[SUCCESS] Parallel prime counting completed in ${primeTime.toFixed(4)} seconds`);
+        console.log(`[RESULT] Found ${primeCount.toLocaleString()} prime numbers`);
         
         const totalTime = sortTime + primeTime;
-        console.log(`\n⏱️  Total execution time: ${totalTime.toFixed(4)} seconds`);
+        console.log(`\n[TIME] Total execution time: ${totalTime.toFixed(4)} seconds`);
         
         // Performance details
-        console.log('\n📈 Performance Details:');
+        console.log('\n[PERFORMANCE] Performance Details:');
         console.log(`- Workers used: ${sorter.numWorkers}`);
         console.log(`- Sequential threshold: ${sorter.sequentialThreshold.toLocaleString()}`);
         console.log(`- Shared memory size: ${(sorter.sharedBuffer.byteLength / 1024 / 1024).toFixed(1)} MB`);
@@ -315,7 +315,7 @@ async function main() {
         console.log(`- Prime time: ${primeTime.toFixed(4)}s`);
         
     } catch (error) {
-        console.error('❌ Error:', error.message);
+        console.error('[ERROR] Error:', error.message);
         process.exit(1);
     }
 }

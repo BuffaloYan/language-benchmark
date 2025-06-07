@@ -1,36 +1,36 @@
 #!/bin/bash
 
-echo "🦀 Comprehensive Rust Testing"
-echo "============================="
+echo "[RUST-TEST] Comprehensive Rust Testing"
+echo "======================================="
 
 cd /benchmark
 
-echo "📋 Rust Environment Information:"
+echo "[INFO] Rust Environment Information:"
 echo "- Rust compiler: $(rustc --version)"
 echo "- Cargo package manager: $(cargo --version)"
 echo "- Rustup toolchain manager: $(rustup --version)"
 echo "- Active toolchain: $(rustup show active-toolchain)"
 echo ""
 
-echo "🔧 Available Rust components:"
+echo "[COMPONENTS] Available Rust components:"
 rustup component list --installed
 echo ""
 
-echo "📊 Rust compilation test:"
-echo "========================"
+echo "[COMPILE] Rust compilation test:"
+echo "================================"
 echo "Compiling Rust merge sort implementation..."
 
 # Test compilation with verbose output
 if rustc -O rust/mergesort.rs -o rust/mergesort_rust --verbose; then
-    echo "✅ Rust compilation successful!"
+    echo "[SUCCESS] Rust compilation successful!"
     
     echo ""
-    echo "📝 Binary information:"
+    echo "[BINARY] Binary information:"
     ls -lh rust/mergesort_rust
     echo "Binary type: $(ls -la rust/mergesort_rust | awk '{print $1}')"
     
     echo ""
-    echo "🧪 Running Rust test with small dataset..."
+    echo "[TEST] Running Rust test with small dataset..."
     
     # Generate small test data
     python3 -c "
@@ -48,20 +48,20 @@ print('Generated 1,000 test numbers for Rust verification')
     ./rust/mergesort_rust rust_test_data.csv
     
     echo ""
-    echo "🧪 Testing Rust parallel implementation..."
+    echo "[PARALLEL] Testing Rust parallel implementation..."
     if [ -f "rust/parallel_mergesort_rust" ]; then
         echo "Running Rust parallel benchmark:"
         ./rust/parallel_mergesort_rust rust_test_data.csv
     else
-        echo "⚠️  Rust parallel binary not found (may need cargo build)"
+        echo "[WARNING] Rust parallel binary not found (may need cargo build)"
     fi
     
     # Clean up test data
     rm -f rust_test_data.csv
     
     echo ""
-    echo "✅ Rust test completed successfully!"
+    echo "[SUCCESS] Rust test completed successfully!"
 else
-    echo "❌ Rust compilation failed!"
+    echo "[ERROR] Rust compilation failed!"
     exit 1
 fi 

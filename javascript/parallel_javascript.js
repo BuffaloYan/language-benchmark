@@ -145,7 +145,7 @@ class ParallelMergeSort {
             }
         }
         
-        console.log(`📦 Divided into ${chunks.length} chunks for prime counting`);
+        console.log(`[CHUNKS] Divided into ${chunks.length} chunks for prime counting`);
         
         // Execute prime counting in parallel
         const promises = chunks.map(chunk => 
@@ -172,7 +172,7 @@ class ParallelMergeSort {
     
     async run(filename = 'test_data.csv') {
         try {
-            console.log('🚀 JavaScript Parallel Merge Sort + Prime Counting');
+            console.log('[PARALLEL] JavaScript Parallel Merge Sort + Prime Counting');
             console.log('===================================================');
             console.log(`Available CPU cores: ${os.cpus().length}`);
             console.log(`Worker pool size: ${this.workerPool.workers.length}`);
@@ -180,38 +180,38 @@ class ParallelMergeSort {
             console.log();
             
             // Load data
-            console.log('📊 Loading data...');
+            console.log('[DATA] Loading data...');
             const numbers = this.loadData(filename);
             console.log(`Loaded ${numbers.length.toLocaleString()} numbers`);
             
             // Parallel merge sort
-            console.log('🔄 Starting parallel merge sort...');
+            console.log('[SORT] Starting parallel merge sort...');
             const sortStartTime = Date.now();
             const sortedNumbers = await this.parallelMergeSort([...numbers]);
             const sortEndTime = Date.now();
             
             const sortTime = (sortEndTime - sortStartTime) / 1000;
-            console.log(`✅ Parallel merge sort completed in ${sortTime.toFixed(4)} seconds`);
+            console.log(`[SUCCESS] Parallel merge sort completed in ${sortTime.toFixed(4)} seconds`);
             
             // Verify sorting
             const sorted = this.isSorted(sortedNumbers);
-            console.log(`🔍 Sorting verified: ${sorted}`);
+            console.log(`[VERIFY] Sorting verified: ${sorted}`);
             
             // Parallel prime counting
-            console.log('🔢 Starting parallel prime counting...');
+            console.log('[PRIMES] Starting parallel prime counting...');
             const primeStartTime = Date.now();
             const primeCount = await this.parallelPrimeCount(sortedNumbers);
             const primeEndTime = Date.now();
             
             const primeTime = (primeEndTime - primeStartTime) / 1000;
-            console.log(`✅ Parallel prime counting completed in ${primeTime.toFixed(4)} seconds`);
-            console.log(`🎯 Found ${primeCount.toLocaleString()} prime numbers`);
+            console.log(`[SUCCESS] Parallel prime counting completed in ${primeTime.toFixed(4)} seconds`);
+            console.log(`[RESULT] Found ${primeCount.toLocaleString()} prime numbers`);
             
             const totalTime = sortTime + primeTime;
-            console.log(`⏱️  Total execution time: ${totalTime.toFixed(4)} seconds`);
+            console.log(`[TIME] Total execution time: ${totalTime.toFixed(4)} seconds`);
             
             console.log();
-            console.log('📈 Performance Details:');
+            console.log('[PERFORMANCE] Performance Details:');
             console.log(`- Active workers: ${this.workerPool.workers.length}`);
             console.log(`- Completed tasks: ${this.workerPool.taskId}`);
             
@@ -220,7 +220,7 @@ class ParallelMergeSort {
             return { sortTime, primeTime, totalTime, primeCount };
             
         } catch (error) {
-            console.error('❌ Error:', error.message);
+            console.error('[ERROR] Error:', error.message);
             await this.workerPool.terminate();
             throw error;
         }

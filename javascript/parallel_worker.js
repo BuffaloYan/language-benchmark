@@ -1,19 +1,62 @@
 // Worker thread module for parallel processing
 const { parentPort } = require('worker_threads');
 
-function mergeSort(arr) {
-    if (arr.length <= 1) {
-        return arr;
+function mergeSort(arr, start = 0, end = arr.length - 1) {
+    if (start >= end) {
+        return;
     }
     
-    const mid = Math.floor(arr.length / 2);
-    const left = mergeSort(arr.slice(0, mid));
-    const right = mergeSort(arr.slice(mid));
+    const mid = Math.floor((start + end) / 2);
+    mergeSort(arr, start, mid);
+    mergeSort(arr, mid + 1, end);
+    mergeInPlace(arr, start, mid, end);
+}
+
+function mergeInPlace(arr, start, mid, end) {
+    // Create temporary arrays for the two halves
+    const leftSize = mid - start + 1;
+    const rightSize = end - mid;
     
-    return merge(left, right);
+    const leftArr = new Array(leftSize);
+    const rightArr = new Array(rightSize);
+    
+    // Copy data to temporary arrays
+    for (let i = 0; i < leftSize; i++) {
+        leftArr[i] = arr[start + i];
+    }
+    for (let j = 0; j < rightSize; j++) {
+        rightArr[j] = arr[mid + 1 + j];
+    }
+    
+    // Merge the temporary arrays back into arr[start..end]
+    let i = 0, j = 0, k = start;
+    
+    while (i < leftSize && j < rightSize) {
+        if (leftArr[i] <= rightArr[j]) {
+            arr[k] = leftArr[i];
+            i++;
+        } else {
+            arr[k] = rightArr[j];
+            j++;
+        }
+        k++;
+    }
+    
+    // Copy remaining elements
+    while (i < leftSize) {
+        arr[k] = leftArr[i];
+        i++;
+        k++;
+    }
+    while (j < rightSize) {
+        arr[k] = rightArr[j];
+        j++;
+        k++;
+    }
 }
 
 function merge(left, right) {
+    // Keep this function for backward compatibility with MERGE task type
     const result = [];
     let i = 0, j = 0;
     
@@ -68,7 +111,10 @@ parentPort.on('message', ({ type, data, taskId }) => {
         
         switch (type) {
             case 'SORT':
-                result = mergeSort(data);
+                // Create a copy of the data for in-place sorting
+                const dataCopy = [...data];
+                mergeSort(dataCopy);
+                result = dataCopy;
                 break;
                 
             case 'COUNT_PRIMES':

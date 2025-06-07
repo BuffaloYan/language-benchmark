@@ -107,21 +107,10 @@ Based on 10 million integer sorting + prime counting across multiple environment
 2. **Java Fork-Join**: 0.27s (5.64x speedup, 47.0% efficiency)
 3. **JavaScript SharedArrayBuffer**: 0.68s (4.17x speedup, 34.8% efficiency)
 4. **JavaScript Workers**: 2.35s (1.21x speedup, 10.1% efficiency)
-
-### Docker Performance (Linux x86_64, 6 CPU cores)
-
-**Sequential Performance:**
-1. **C**: 1.14s (fastest baseline)
-2. **Java**: 1.48s (1.30x slower than C)
-3. **Go (optimized)**: 1.63s (1.43x slower than C)
-4. **Go (original)**: 1.86s (1.63x slower than C)
-5. **JavaScript**: 2.87s (2.52x slower than C)
-
-**Parallel Performance:**
-1. **C pthreads**: 0.25s (4.56x speedup, 76.0% efficiency)
-2. **Java Fork-Join**: 0.40s (3.74x speedup, 62.3% efficiency)
-3. **JavaScript SharedArrayBuffer**: 0.81s (3.53x speedup, 58.9% efficiency)
-4. **JavaScript Workers**: 2.78s (1.03x speedup, 17.2% efficiency)
+5. **C pthreads**: 0.25s (4.56x speedup, 76.0% efficiency)
+6. **Java Fork-Join**: 0.40s (3.74x speedup, 62.3% efficiency)
+7. **JavaScript SharedArrayBuffer**: 0.81s (3.53x speedup, 58.9% efficiency)
+8. **JavaScript Workers**: 2.78s (1.03x speedup, 17.2% efficiency)
 
 ### Docker Constrained (Linux x86_64, 2 CPU cores limited)
 

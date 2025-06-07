@@ -1,0 +1,152 @@
+================================================================================
+PARALLEL PROGRAMMING LANGUAGE BENCHMARK REPORT
+================================================================================
+Generated: 2025-06-07 10:10:20
+Test Data: 10,000,000 random integers → merge sort + prime counting
+System: 6 CPU cores, Linux
+
+EXECUTION TIME RESULTS:
+--------------------------------------------------
+ 1. Rust Rayon                  0.3427s (wall: 1.4967s) [ 1.00x] [PARALLEL]
+ 2. C pthreads                  0.4148s (wall: 2.3333s) [ 1.21x] [PARALLEL]
+ 3. Java Fork-Join              0.4621s (wall: 2.0592s) [ 1.35x] [PARALLEL]
+ 4. JavaScript SharedArrayBuffer   1.0108s (wall: 2.4943s) [ 2.95x] [PARALLEL]
+ 5. C Sequential                1.6144s (wall: 3.6650s) [ 4.71x] [SEQUENTIAL]
+ 6. Rust Sequential             1.8185s (wall: 2.9449s) [ 5.31x] [SEQUENTIAL]
+ 7. Go (optimized)              1.9212s (wall: 4.3506s) [ 5.61x] [SEQUENTIAL]
+ 8. Java Sequential             1.9368s (wall: 2.6297s) [ 5.65x] [SEQUENTIAL]
+ 9. JavaScript Sequential       2.0580s (wall: 3.6950s) [ 6.01x] [SEQUENTIAL]
+10. Go (original)               2.1620s (wall: 4.6318s) [ 6.31x] [SEQUENTIAL]
+11. JavaScript Workers          3.8560s (wall: 5.4978s) [11.25x] [PARALLEL]
+
+PARALLEL vs SEQUENTIAL ANALYSIS:
+--------------------------------------------------
+
+Java:
+  Sequential:    1.9368s
+  Parallel:      0.4621s (Fork-Join)
+  Speedup:         4.19x
+  Efficiency:      69.9%
+
+C:
+  Sequential:    1.6144s
+  Parallel:      0.4148s (pthreads)
+  Speedup:         3.89x
+  Efficiency:      64.9%
+
+Rust:
+  Sequential:    1.8185s
+  Parallel:      0.3427s (Rayon)
+  Speedup:         5.31x
+  Efficiency:      88.4%
+
+JavaScript:
+  Sequential:    2.0580s
+  Parallel:      3.8560s (Workers)
+  Speedup:         0.53x
+  Efficiency:       8.9%
+
+JavaScript Parallel Approaches:
+  Sequential:        2.0580s
+  Worker Threads:    3.8560s ( 0.53x speedup,  8.9% efficiency)
+  SharedArrayBuffer:   1.0108s ( 2.04x speedup, 33.9% efficiency)
+
+Go Algorithm Comparison (Single-threaded):
+  Original (allocating):   2.1620s
+  Optimized (in-place):    1.9212s
+  Improvement:               11.1% (1.13x speedup)
+
+DETAILED RESULTS:
+--------------------------------------------------
+
+Java Fork-Join:
+  Status: ✓ Success
+  Execution Time: 0.4621 seconds
+  Wall Clock Time: 2.0592 seconds
+  Parallelism Info:
+    CPU Cores: 6
+    Parallelism Level: 6
+    Work Steal Count: 27
+
+C pthreads:
+  Status: ✓ Success
+  Execution Time: 0.4148 seconds
+  Wall Clock Time: 2.3333 seconds
+  Parallelism Info:
+    CPU Cores: 6
+
+Rust Rayon:
+  Status: ✓ Success
+  Execution Time: 0.3427 seconds
+  Wall Clock Time: 1.4967 seconds
+  Parallelism Info:
+    CPU Cores: 6
+
+JavaScript Workers:
+  Status: ✓ Success
+  Execution Time: 3.8560 seconds
+  Wall Clock Time: 5.4978 seconds
+  Parallelism Info:
+    CPU Cores: 6
+
+JavaScript SharedArrayBuffer:
+  Status: ✓ Success
+  Execution Time: 1.0108 seconds
+  Wall Clock Time: 2.4943 seconds
+  Parallelism Info:
+    CPU Cores: 6
+
+Java Sequential:
+  Status: ✓ Success
+  Execution Time: 1.9368 seconds
+  Wall Clock Time: 2.6297 seconds
+  Parallelism Info:
+
+Go (original):
+  Status: ✓ Success
+  Execution Time: 2.1620 seconds
+  Wall Clock Time: 4.6318 seconds
+  Parallelism Info:
+
+Go (optimized):
+  Status: ✓ Success
+  Execution Time: 1.9212 seconds
+  Wall Clock Time: 4.3506 seconds
+  Parallelism Info:
+
+C Sequential:
+  Status: ✓ Success
+  Execution Time: 1.6144 seconds
+  Wall Clock Time: 3.6650 seconds
+  Parallelism Info:
+
+Rust Sequential:
+  Status: ✓ Success
+  Execution Time: 1.8185 seconds
+  Wall Clock Time: 2.9449 seconds
+  Parallelism Info:
+
+JavaScript Sequential:
+  Status: ✓ Success
+  Execution Time: 2.0580 seconds
+  Wall Clock Time: 3.6950 seconds
+  Parallelism Info:
+
+PERFORMANCE INSIGHTS:
+--------------------------------------------------
+Fastest Implementation: 0.3427s
+Slowest Implementation: 3.8560s
+Average Execution Time: 1.5998s
+Performance Range: 11.25x difference
+Parallel Implementations: 5
+Sequential Implementations: 4
+Best Parallel vs Best Sequential: 4.71x speedup
+
+SYSTEM INFORMATION:
+--------------------------------------------------
+Operating System: Linux
+CPU Cores: 6
+Python Version: 3.12.7
+Architecture: x86_64
+
+================================================================================

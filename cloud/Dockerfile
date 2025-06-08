@@ -87,6 +87,9 @@ COPY docs/ /benchmark/docs/
 COPY benchmark.py /benchmark/
 COPY parallel_comparison.py /benchmark/
 
+# Copy test data file - this will be created by the benchmark script if not present
+# We'll let the script generate it as needed
+
 # Make scripts executable
 RUN chmod +x /benchmark/*.py /benchmark/javascript/*.js /benchmark/scripts/*.sh
 
@@ -100,6 +103,9 @@ ENV NODE_PATH="/benchmark"
 # Compile Java programs with UTF-8 encoding
 RUN cd /benchmark && javac -encoding UTF-8 -cp java java/*.java
 
+# Verify Java compilation
+RUN cd /benchmark && ls -la java/*.class
+
 # Build Go programs
 RUN cd /benchmark && go build -o go/mergesort_go go/mergesort.go
 RUN cd /benchmark && go build -o go/mergesort_go_optimized go/mergesort_optimized.go
@@ -112,6 +118,10 @@ RUN cp /benchmark/rust/target/release/parallel_mergesort_rust /benchmark/rust/pa
 # Verify Rust binaries were created successfully
 RUN ls -la /benchmark/rust/mergesort_rust && echo "Rust sequential binary size: $(du -h /benchmark/rust/mergesort_rust | cut -f1)"
 RUN ls -la /benchmark/rust/parallel_mergesort_rust && echo "Rust parallel binary size: $(du -h /benchmark/rust/parallel_mergesort_rust | cut -f1)"
+
+# Verify all binaries are executable
+RUN cd /benchmark && echo "=== Binary verification ===" && \
+    ls -la go/mergesort_go* rust/mergesort_rust* c/mergesort_c* c/parallel_mergesort_c java/*.class
 
 # Build C programs with optimizations
 RUN cd /benchmark && gcc -O3 -o c/mergesort_c c/mergesort.c

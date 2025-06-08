@@ -6,7 +6,7 @@
 set -e
 
 # Configuration
-AWS_REGION=${AWS_REGION:-us-west-2}
+AWS_REGION=${AWS_REGION:-us-east-1}
 ECR_REPO_NAME="language-benchmark"
 CLUSTER_NAME="benchmark-cluster"
 SERVICE_NAME="benchmark-service"
@@ -36,7 +36,8 @@ aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS 
 
 # Build and push Docker image
 echo "🔨 Building Docker image..."
-docker build -t ${ECR_REPO_NAME}:latest .
+cd ..
+docker build -f cloud/Dockerfile -t ${ECR_REPO_NAME}:latest .
 docker tag ${ECR_REPO_NAME}:latest ${ECR_URI}:latest
 
 echo "📤 Pushing to ECR..."
@@ -88,6 +89,9 @@ aws ecs register-task-definition --cli-input-json file://task-definition.json --
 echo ""
 echo "✅ Deployment setup complete!"
 echo ""
+echo "🧪 To test the environment first:"
+echo "docker run --rm ${ECR_URI}:latest /benchmark/scripts/test_environment.sh"
+echo ""
 echo "🚀 To run the benchmark:"
 echo "aws ecs run-task \\"
 echo "  --cluster ${CLUSTER_NAME} \\"
@@ -102,7 +106,8 @@ echo ""
 echo "🔧 Alternative: Run on EC2 instance:"
 echo "1. Launch EC2 instance with Docker"
 echo "2. Install Docker and AWS CLI"
-echo "3. Run: docker run -it ${ECR_URI}:latest"
+echo "3. Test: docker run --rm ${ECR_URI}:latest /benchmark/scripts/test_environment.sh"
+echo "4. Run: docker run --rm -v \$(pwd)/results:/benchmark/results ${ECR_URI}:latest"
 
 # Clean up
 rm -f task-definition.json 

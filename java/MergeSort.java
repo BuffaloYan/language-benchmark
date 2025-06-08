@@ -38,14 +38,34 @@ public class MergeSort {
     }
     
     private static int[] loadData(String filename) throws IOException {
+        File file = new File(filename);
+        if (!file.exists()) {
+            throw new IOException("Data file does not exist: " + filename);
+        }
+        if (file.length() == 0) {
+            throw new IOException("Data file is empty: " + filename);
+        }
+        
         BufferedReader reader = new BufferedReader(new FileReader(filename));
         String line = reader.readLine();
         reader.close();
         
+        if (line == null || line.trim().isEmpty()) {
+            throw new IOException("Data file contains no data or first line is empty: " + filename);
+        }
+        
         String[] parts = line.split(",");
+        if (parts.length == 0) {
+            throw new IOException("No comma-separated values found in data file: " + filename);
+        }
+        
         int[] numbers = new int[parts.length];
         for (int i = 0; i < parts.length; i++) {
-            numbers[i] = Integer.parseInt(parts[i]);
+            try {
+                numbers[i] = Integer.parseInt(parts[i].trim());
+            } catch (NumberFormatException e) {
+                throw new IOException("Invalid number format at position " + i + ": " + parts[i], e);
+            }
         }
         
         return numbers;

@@ -5,17 +5,19 @@ import os
 import json
 from datetime import datetime
 import sys
+import argparse
 
 class LanguageBenchmark:
-    def __init__(self):
+    def __init__(self, data_size=10_000_000, data_file="test_data.csv"):
         self.results = {}
-        self.data_file = "test_data.csv"
+        self.data_file = data_file
+        self.data_size = data_size
         
     def ensure_data_exists(self):
         """Generate test data if it doesn't exist"""
         if not os.path.exists(self.data_file):
-            print("Generating test data...")
-            subprocess.run([sys.executable, "python/generate_data.py"], check=True)
+            print(f"Generating test data with {self.data_size:,} elements...")
+            subprocess.run([sys.executable, "python/generate_data.py", "--size", str(self.data_size), "--filename", self.data_file], check=True)
         else:
             print(f"Using existing test data: {self.data_file}")
     
@@ -207,7 +209,7 @@ class LanguageBenchmark:
         report.append("MERGE SORT LANGUAGE BENCHMARK REPORT")
         report.append("=" * 60)
         report.append(f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-        report.append(f"Test Data: 10,000,000 random integers")
+        report.append(f"Test Data: {self.data_size:,} random integers")
         report.append("")
         
         # Summary table
@@ -276,7 +278,10 @@ class LanguageBenchmark:
             report.append(f"Fastest: {fastest:.4f}s")
             report.append(f"Slowest: {slowest:.4f}s")
             report.append(f"Average: {average:.4f}s")
-            report.append(f"Range: {slowest/fastest:.2f}x difference")
+            if fastest > 0:
+                report.append(f"Range: {slowest/fastest:.2f}x difference")
+            else:
+                report.append("Range: Unable to calculate (fastest time is 0)")
         
         report.append("\n" + "=" * 60)
         
@@ -315,13 +320,29 @@ class LanguageBenchmark:
         self.save_results()
         
         # Save report to file
-        with open("results/benchmark_report.txt", "w") as f:
+        with open("results/benchmark_report.txt", "w", encoding='utf-8') as f:
             f.write(report)
         
         print(f"\nResults saved to:")
         print(f"  - results/benchmark_results.json (raw data)")
         print(f"  - results/benchmark_report.txt (formatted report)")
 
+def main():
+    parser = argparse.ArgumentParser(description='Multi-language merge sort benchmark')
+    parser.add_argument('--size', '-s', type=int, default=10_000_000,
+                        help='Number of elements in test data (default: 10,000,000)')
+    parser.add_argument('--data-file', '-f', type=str, default='test_data.csv',
+                        help='Test data file name (default: test_data.csv)')
+    
+    args = parser.parse_args()
+    
+    # Validate size
+    if args.size <= 0:
+        print("Error: Size must be a positive integer", file=sys.stderr)
+        sys.exit(1)
+    
+    benchmark = LanguageBenchmark(data_size=args.size, data_file=args.data_file)
+    benchmark.run()
+
 if __name__ == "__main__":
-    benchmark = LanguageBenchmark()
-    benchmark.run() 
+    main() 

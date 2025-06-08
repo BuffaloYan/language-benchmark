@@ -20,13 +20,21 @@ For detailed installation instructions for your operating system (Windows, macOS
 
 Here is how you can run tests locally.
 ```bash
-# Run sequential benchmarks
+# Run sequential benchmarks (default: 10 million elements)
 ./run_benchmark.sh
 python3 benchmark.py
 
-# Run parallel comparison
+# Run with custom data size (1 million elements)
+python3 benchmark.py --size 1000000
+
+# Run parallel comparison (default: 10 million elements)
 python3 parallel_comparison.py
 
+# Quick validation test
+./scripts/quick_test.sh
+
+# JavaScript JIT analysis
+./run_jit_comparison.sh
 
 # Results are automatically saved to results/ folder
 ls results/
@@ -135,6 +143,15 @@ See [Cloud Deployment Guide](docs/CLOUD_DEPLOYMENT_GUIDE.md) for detailed instru
 - **Data size**: Edit `python/generate_data.py`
 - **Timeout values**: Modify `benchmark.py` timeout parameters
 - **Prime algorithm**: Update prime counting logic in implementations
+
+## 🔢 Single-Core Performance Comparison (Geekbench 6)
+| CPU                       | Year | Geekbench 6 SC\* | Clock Speed      | Architecture     | Notes                                    |
+| ------------------------- | ---- | ---------------- | ---------------- | ---------------- | ---------------------------------------- |
+| **Intel Xeon E5-2686 v4** | 2016 | \~610            | 2.3–3.0 GHz      | Broadwell (14nm) | EC2-type, old server chip                |
+| **AMD Ryzen 9 7900X**     | 2022 | \~2,950          | 4.7–5.6 GHz      | Zen 4 (5nm)      | Modern desktop CPU, top-tier performance |
+| **Apple M4**              | 2024 | \~3,750          | \~4.4 GHz (est.) | 3nm, Custom ARM  | Fastest single-core CPU in 2024          |
+
+
 
 ## 🤝 Contributing
 

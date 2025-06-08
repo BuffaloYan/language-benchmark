@@ -1,7 +1,13 @@
 #!/bin/bash
 
+# Parse command line arguments
+DATA_SIZE="${1:-10000000}"  # Default to 10 million if not specified
+DATA_FILE="${2:-test_data.csv}"  # Default filename
+
 echo "[BENCHMARK] Multi-Language Benchmark Suite"
 echo "=========================================="
+echo "Data Size: ${DATA_SIZE}"
+echo "Data File: ${DATA_FILE}"
 echo "Container Environment Information:"
 echo "- OS: $(cat /etc/os-release | grep PRETTY_NAME | cut -d'"' -f2)"
 echo "- CPU Cores: $(nproc)"
@@ -18,10 +24,26 @@ echo ""
 
 cd /benchmark
 
-# Generate test data if not exists
-if [ ! -f "test_data.csv" ]; then
-    echo "[DATA] Generating test data..."
-    python3 python/generate_data.py
+# Generate test data if not exists or if size doesn't match
+if [ ! -f "${DATA_FILE}" ]; then
+    echo "[DATA] Generating test data with ${DATA_SIZE} elements..."
+    python3 python/generate_data.py --size "${DATA_SIZE}" --filename "${DATA_FILE}"
+    
+    # Verify the data file was created successfully
+    if [ -f "${DATA_FILE}" ]; then
+        FILE_SIZE=$(wc -c < "${DATA_FILE}")
+        echo "[DATA] Generated data file: ${DATA_FILE} (${FILE_SIZE} bytes)"
+        # Show first few characters to verify content
+        echo "[DATA] First 100 characters: $(head -c 100 "${DATA_FILE}")"
+    else
+        echo "[ERROR] Failed to generate data file: ${DATA_FILE}"
+        exit 1
+    fi
+else
+    FILE_SIZE=$(wc -c < "${DATA_FILE}")
+    echo "[DATA] Using existing data file: ${DATA_FILE} (${FILE_SIZE} bytes)"
+    # Show first few characters to verify content
+    echo "[DATA] First 100 characters: $(head -c 100 "${DATA_FILE}")"
 fi
 
 echo "[RUST] Rust Compilation Verification:"
@@ -41,12 +63,12 @@ echo ""
 echo "[SEQUENTIAL] Running Sequential Benchmarks..."
 echo "============================================="
 echo "[INFO] Note: Python excluded from benchmarks (files available for manual testing)"
-python3 benchmark.py
+python3 benchmark.py --size "${DATA_SIZE}" --data-file "${DATA_FILE}"
 
 echo ""
 echo "[PARALLEL] Running Parallel Benchmarks..."
 echo "=========================================="
-python3 parallel_comparison.py
+python3 parallel_comparison.py --size "${DATA_SIZE}" --data-file "${DATA_FILE}"
 
 echo ""
 echo "[RESULTS] Benchmark Results Summary:"

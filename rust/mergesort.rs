@@ -50,16 +50,45 @@ fn merge(arr: &mut [i32], temp: &mut [i32], left: usize, mid: usize, right: usiz
 }
 
 fn load_data(filename: &str) -> Result<Vec<i32>, Box<dyn std::error::Error>> {
-    let file = File::open(filename)?;
-    let reader = BufReader::new(file);
-    let line = reader.lines().next().unwrap()?;
+    use std::path::Path;
     
+    // Check if file exists
+    if !Path::new(filename).exists() {
+        return Err(format!("Data file does not exist: {}", filename).into());
+    }
+    
+    let file = File::open(filename)?;
+    let metadata = file.metadata()?;
+    if metadata.len() == 0 {
+        return Err(format!("Data file is empty: {}", filename).into());
+    }
+    
+    let reader = BufReader::new(file);
+    let mut lines = reader.lines();
+    
+    let line = match lines.next() {
+        Some(line_result) => line_result?,
+        None => return Err(format!("Data file contains no lines: {}", filename).into()),
+    };
+    
+    if line.trim().is_empty() {
+        return Err(format!("Data file first line is empty: {}", filename).into());
+    }
+
     let numbers: Result<Vec<i32>, _> = line
         .split(',')
         .map(|s| s.trim().parse::<i32>())
         .collect();
-    
-    Ok(numbers?)
+
+    match numbers {
+        Ok(nums) => {
+            if nums.is_empty() {
+                return Err(format!("No valid numbers found in data file: {}", filename).into());
+            }
+            Ok(nums)
+        },
+        Err(e) => Err(format!("Error parsing numbers from data file: {}", e).into()),
+    }
 }
 
 fn is_sorted(arr: &[i32]) -> bool {

@@ -1,0 +1,68 @@
+============================================================
+MERGE SORT LANGUAGE BENCHMARK REPORT
+============================================================
+Generated: 2025-06-08 12:42:14
+Test Data: 5,000,000 random integers
+
+EXECUTION TIME RESULTS:
+----------------------------------------
+1. C              2.0572s (wall: 2.3451s) [ 1.00x]
+2. Rust           2.4738s (wall: 2.9664s) [ 1.20x]
+3. JavaScript     3.8930s (wall: 6.4403s) [ 1.89x]
+4. Go (optimized)   5.9720s (wall: 6.9344s) [ 2.90x]
+5. Go (original)   5.9946s (wall: 6.9616s) [ 2.91x]
+
+DETAILED RESULTS:
+----------------------------------------
+
+JavaScript:
+  Status: ✓ Success
+  Execution Time: 3.8930 seconds
+  Wall Clock Time: 6.4403 seconds
+
+Java:
+  Status: ✗ Failed
+  Error: Exception in thread "main" java.lang.OutOfMemoryError: Java heap space
+	at java.base/java.util.Arrays.copyOfRange(Arrays.java:3822)
+	at java.base/java.lang.StringLatin1.newString(StringLatin1.java:769)
+	at java.base/java.lang.String.substring(String.java:2714)
+	at java.base/java.lang.String.split(String.java:3127)
+	at java.base/java.lang.String.split(String.java:3201)
+	at MergeSort.loadData(MergeSort.java:57)
+	at MergeSort.main(MergeSort.java:111)
+
+
+Go (original):
+  Status: ✓ Success
+  Execution Time: 5.9946 seconds
+  Wall Clock Time: 6.9616 seconds
+
+Go (optimized):
+  Status: ✓ Success
+  Execution Time: 5.9720 seconds
+  Wall Clock Time: 6.9344 seconds
+
+Rust:
+  Status: ✓ Success
+  Execution Time: 2.4738 seconds
+  Wall Clock Time: 2.9664 seconds
+
+C:
+  Status: ✓ Success
+  Execution Time: 2.0572 seconds
+  Wall Clock Time: 2.3451 seconds
+
+SYSTEM INFORMATION:
+----------------------------------------
+OS: Linux 6.1.134-152.225.amzn2023.x86_64
+Architecture: x86_64
+Python Version: 3.11.0rc1
+
+PERFORMANCE ANALYSIS:
+----------------------------------------
+Fastest: 2.0572s
+Slowest: 5.9946s
+Average: 4.0781s
+Range: 2.91x difference
+
+============================================================

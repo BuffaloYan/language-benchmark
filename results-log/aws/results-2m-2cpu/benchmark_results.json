@@ -1,0 +1,47 @@
+{
+  "timestamp": "2025-06-08T14:33:07.162139",
+  "results": {
+    "JavaScript": {
+      "status": "success",
+      "execution_time": 1.026,
+      "wall_time": 1.631321668624878,
+      "stdout": "Loading data...\nLoaded 2,000,000 numbers\nStarting merge sort...\nJavaScript optimized merge sort completed in 0.5800 seconds\nSorting verified: true\nCounting prime numbers...\nPrime counting completed in 0.4460 seconds\nFound 132,832 prime numbers\nTotal execution time: 1.0260 seconds\n",
+      "stderr": ""
+    },
+    "Java": {
+      "status": "success",
+      "execution_time": 0.8779,
+      "wall_time": 1.4539744853973389,
+      "stdout": "Loading data...\nLoaded 2,000,000 numbers\nStarting merge sort...\nJava merge sort completed in 0.4653 seconds\nSorting verified: true\nCounting prime numbers...\nPrime counting completed in 0.4126 seconds\nFound 132,832 prime numbers\nTotal execution time: 0.8779 seconds\n",
+      "stderr": ""
+    },
+    "Go (original)": {
+      "status": "success",
+      "execution_time": 1.0679,
+      "wall_time": 1.4691534042358398,
+      "stdout": "Loading data...\nLoaded 2000000 numbers\nStarting merge sort...\nGo merge sort completed in 0.4068 seconds\nSorting verified: true\nCounting prime numbers...\nPrime counting completed in 0.6611 seconds\nFound 132832 prime numbers\nTotal execution time: 1.0679 seconds\n",
+      "stderr": ""
+    },
+    "Go (optimized)": {
+      "status": "success",
+      "execution_time": 0.9661,
+      "wall_time": 1.4055407047271729,
+      "stdout": "Loading data...\nLoaded 2000000 numbers\nStarting merge sort...\nGo optimized merge sort completed in 0.2994 seconds\nSorting verified: true\nCounting prime numbers...\nPrime counting completed in 0.6667 seconds\nFound 132832 prime numbers\nTotal execution time: 0.9661 seconds\n",
+      "stderr": ""
+    },
+    "Rust": {
+      "status": "success",
+      "execution_time": 0.7308,
+      "wall_time": 0.8103165626525879,
+      "stdout": "Loading data...\nLoaded 2000000 numbers\nStarting merge sort...\nRust merge sort completed in 0.3222 seconds\nSorting verified: true\nCounting prime numbers...\nPrime counting completed in 0.4086 seconds\nFound 132832 prime numbers\nTotal execution time: 0.7308 seconds\n",
+      "stderr": ""
+    },
+    "C": {
+      "status": "success",
+      "execution_time": 0.6631,
+      "wall_time": 0.7545731067657471,
+      "stdout": "Loading data...\nLoaded 2000000 numbers\nStarting merge sort...\nC merge sort completed in 0.2621 seconds\nSorting verified: true\nCounting prime numbers...\nPrime counting completed in 0.4010 seconds\nFound 132832 prime numbers\nTotal execution time: 0.6631 seconds\n",
+      "stderr": ""
+    }
+  }
+}

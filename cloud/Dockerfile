@@ -20,7 +20,14 @@ RUN apt-get update && apt-get install -y \
     ca-certificates \
     gnupg \
     lsb-release \
+    unzip \
     && rm -rf /var/lib/apt/lists/*
+
+# Install AWS CLI v2
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
+    && unzip awscliv2.zip \
+    && ./aws/install \
+    && rm -rf awscliv2.zip aws/
 
 # Install Python 3.11
 RUN apt-get update && apt-get install -y \
@@ -71,7 +78,8 @@ RUN echo "=== Language Versions ===" \
     && go version \
     && echo "Rust compiler: $(rustc --version)" \
     && echo "Rust toolchain: $(rustup show | head -1 | awk '{print $1, $2}')" \
-    && echo "Cargo version: $(cargo --version)"
+    && echo "Cargo version: $(cargo --version)" \
+    && echo "AWS CLI: $(aws --version)"
 
 # Copy source files in organized structure
 COPY python/ /benchmark/python/

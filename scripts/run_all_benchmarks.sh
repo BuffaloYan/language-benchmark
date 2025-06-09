@@ -93,5 +93,12 @@ echo "- parallel_comparison_results.json (parallel)"
 # Results are now already in results directory
 echo "All results saved in /benchmark/results/"
 
+# Upload results to S3 if running in cloud mode
+if [ "$BENCHMARK_MODE" = "cloud" ] && [ -n "$S3_RESULTS_BUCKET" ]; then
+    echo ""
+    echo "[UPLOAD] Uploading results to S3..."
+    /benchmark/scripts/upload_results.sh
+fi
+
 echo ""
 echo "[COMPLETE] Benchmark suite completed!" 

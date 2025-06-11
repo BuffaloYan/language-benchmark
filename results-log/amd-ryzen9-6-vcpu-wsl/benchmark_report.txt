@@ -1,50 +1,50 @@
 ============================================================
 MERGE SORT LANGUAGE BENCHMARK REPORT
 ============================================================
-Generated: 2025-06-11 00:21:46
+Generated: 2025-06-11 01:42:35
 Test Data: 10,000,000 random integers
 
 EXECUTION TIME RESULTS:
 ----------------------------------------
-1. C              1.6812s (wall: 1.9075s) [ 1.00x]
-2. Rust           1.7925s (wall: 1.9528s) [ 1.07x]
-3. Go (optimized)   1.9639s (wall: 2.4558s) [ 1.17x]
-4. Go (original)   2.2088s (wall: 2.8836s) [ 1.31x]
-5. Java           2.2351s (wall: 2.9653s) [ 1.33x]
-6. JavaScript     2.6610s (wall: 4.5114s) [ 1.58x]
+1. C              1.6557s (wall: 1.8781s) [ 1.00x]
+2. Rust           1.7966s (wall: 1.9525s) [ 1.09x]
+3. Go (optimized)   1.9176s (wall: 2.4040s) [ 1.16x]
+4. Go (original)   2.2011s (wall: 2.6471s) [ 1.33x]
+5. Java           2.2128s (wall: 2.9157s) [ 1.34x]
+6. JavaScript     2.6840s (wall: 4.3860s) [ 1.62x]
 
 DETAILED RESULTS:
 ----------------------------------------
 
 JavaScript:
   Status: ✓ Success
-  Execution Time: 2.6610 seconds
-  Wall Clock Time: 4.5114 seconds
+  Execution Time: 2.6840 seconds
+  Wall Clock Time: 4.3860 seconds
 
 Java:
   Status: ✓ Success
-  Execution Time: 2.2351 seconds
-  Wall Clock Time: 2.9653 seconds
+  Execution Time: 2.2128 seconds
+  Wall Clock Time: 2.9157 seconds
 
 Go (original):
   Status: ✓ Success
-  Execution Time: 2.2088 seconds
-  Wall Clock Time: 2.8836 seconds
+  Execution Time: 2.2011 seconds
+  Wall Clock Time: 2.6471 seconds
 
 Go (optimized):
   Status: ✓ Success
-  Execution Time: 1.9639 seconds
-  Wall Clock Time: 2.4558 seconds
+  Execution Time: 1.9176 seconds
+  Wall Clock Time: 2.4040 seconds
 
 Rust:
   Status: ✓ Success
-  Execution Time: 1.7925 seconds
-  Wall Clock Time: 1.9528 seconds
+  Execution Time: 1.7966 seconds
+  Wall Clock Time: 1.9525 seconds
 
 C:
   Status: ✓ Success
-  Execution Time: 1.6812 seconds
-  Wall Clock Time: 1.9075 seconds
+  Execution Time: 1.6557 seconds
+  Wall Clock Time: 1.8781 seconds
 
 SYSTEM INFORMATION:
 ----------------------------------------
@@ -54,9 +54,9 @@ Python Version: 3.11.0rc1
 
 PERFORMANCE ANALYSIS:
 ----------------------------------------
-Fastest: 1.6812s
-Slowest: 2.6610s
-Average: 2.0904s
-Range: 1.58x difference
+Fastest: 1.6557s
+Slowest: 2.6840s
+Average: 2.0780s
+Range: 1.62x difference
 
 ============================================================

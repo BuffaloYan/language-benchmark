@@ -1,83 +1,35 @@
-// Worker thread module for parallel processing
+// Optimized Worker thread module for parallel processing
 const { parentPort } = require('worker_threads');
 
-function mergeSort(arr, start = 0, end = arr.length - 1) {
-    if (start >= end) {
-        return;
+function mergeSort(arr) {
+    // Optimized recursive merge sort
+    if (arr.length <= 1) {
+        return arr;
     }
     
-    const mid = Math.floor((start + end) / 2);
-    mergeSort(arr, start, mid);
-    mergeSort(arr, mid + 1, end);
-    mergeInPlace(arr, start, mid, end);
-}
-
-function mergeInPlace(arr, start, mid, end) {
-    // Create temporary arrays for the two halves
-    const leftSize = mid - start + 1;
-    const rightSize = end - mid;
+    const mid = Math.floor(arr.length / 2);
+    const left = mergeSort(arr.slice(0, mid));
+    const right = mergeSort(arr.slice(mid));
     
-    const leftArr = new Array(leftSize);
-    const rightArr = new Array(rightSize);
-    
-    // Copy data to temporary arrays
-    for (let i = 0; i < leftSize; i++) {
-        leftArr[i] = arr[start + i];
-    }
-    for (let j = 0; j < rightSize; j++) {
-        rightArr[j] = arr[mid + 1 + j];
-    }
-    
-    // Merge the temporary arrays back into arr[start..end]
-    let i = 0, j = 0, k = start;
-    
-    while (i < leftSize && j < rightSize) {
-        if (leftArr[i] <= rightArr[j]) {
-            arr[k] = leftArr[i];
-            i++;
-        } else {
-            arr[k] = rightArr[j];
-            j++;
-        }
-        k++;
-    }
-    
-    // Copy remaining elements
-    while (i < leftSize) {
-        arr[k] = leftArr[i];
-        i++;
-        k++;
-    }
-    while (j < rightSize) {
-        arr[k] = rightArr[j];
-        j++;
-        k++;
-    }
+    return merge(left, right);
 }
 
 function merge(left, right) {
-    // Keep this function for backward compatibility with MERGE task type
-    const result = [];
-    let i = 0, j = 0;
+    // Optimized merge with pre-allocated array
+    const result = new Array(left.length + right.length);
+    let i = 0, j = 0, k = 0;
     
     while (i < left.length && j < right.length) {
         if (left[i] <= right[j]) {
-            result.push(left[i]);
-            i++;
+            result[k++] = left[i++];
         } else {
-            result.push(right[j]);
-            j++;
+            result[k++] = right[j++];
         }
     }
     
-    while (i < left.length) {
-        result.push(left[i]);
-        i++;
-    }
-    while (j < right.length) {
-        result.push(right[j]);
-        j++;
-    }
+    // Copy remaining elements
+    while (i < left.length) result[k++] = left[i++];
+    while (j < right.length) result[k++] = right[j++];
     
     return result;
 }
@@ -87,7 +39,9 @@ function isPrime(n) {
     if (n === 2) return true;
     if (n % 2 === 0) return false;
     
-    for (let i = 3; i * i <= n; i += 2) {
+    // Optimized prime checking
+    const sqrt = Math.sqrt(n);
+    for (let i = 3; i <= sqrt; i += 2) {
         if (n % i === 0) return false;
     }
     return true;
@@ -104,26 +58,20 @@ function countPrimes(numbers) {
 }
 
 // Handle messages from main thread
-parentPort.on('message', ({ type, data, taskId }) => {
+parentPort.on('message', ({ type, data, chunkIndex }) => {
     try {
         let result;
         const startTime = Date.now();
         
         switch (type) {
-            case 'SORT':
-                // Create a copy of the data for in-place sorting
-                const dataCopy = [...data];
-                mergeSort(dataCopy);
-                result = dataCopy;
+            case 'SORT_CHUNK':
+                // Sort entire chunk using optimized merge sort
+                result = mergeSort(data);
                 break;
                 
             case 'COUNT_PRIMES':
+                // Count primes in the chunk
                 result = countPrimes(data);
-                break;
-                
-            case 'MERGE':
-                // For merging two sorted arrays
-                result = merge(data.left, data.right);
                 break;
                 
             default:
@@ -133,16 +81,16 @@ parentPort.on('message', ({ type, data, taskId }) => {
         const endTime = Date.now();
         
         parentPort.postMessage({
-            taskId,
             result,
             executionTime: endTime - startTime,
-            success: true
+            success: true,
+            chunkIndex
         });
     } catch (error) {
         parentPort.postMessage({
-            taskId,
             error: error.message,
-            success: false
+            success: false,
+            chunkIndex
         });
     }
 }); 

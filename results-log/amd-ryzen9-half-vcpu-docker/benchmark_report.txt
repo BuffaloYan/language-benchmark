@@ -1,0 +1,62 @@
+============================================================
+MERGE SORT LANGUAGE BENCHMARK REPORT
+============================================================
+Generated: 2025-06-11 01:33:21
+Test Data: 10,000,000 random integers
+
+EXECUTION TIME RESULTS:
+----------------------------------------
+1. C              1.6460s (wall: 3.7348s) [ 1.00x]
+2. Rust           3.5316s (wall: 3.8422s) [ 2.15x]
+3. Go (optimized)   3.8506s (wall: 5.2691s) [ 2.34x]
+4. Java           4.1301s (wall: 6.6348s) [ 2.51x]
+5. Go (original)   4.6873s (wall: 5.8854s) [ 2.85x]
+6. JavaScript     5.3790s (wall: 9.4474s) [ 3.27x]
+
+DETAILED RESULTS:
+----------------------------------------
+
+JavaScript:
+  Status: ✓ Success
+  Execution Time: 5.3790 seconds
+  Wall Clock Time: 9.4474 seconds
+
+Java:
+  Status: ✓ Success
+  Execution Time: 4.1301 seconds
+  Wall Clock Time: 6.6348 seconds
+
+Go (original):
+  Status: ✓ Success
+  Execution Time: 4.6873 seconds
+  Wall Clock Time: 5.8854 seconds
+
+Go (optimized):
+  Status: ✓ Success
+  Execution Time: 3.8506 seconds
+  Wall Clock Time: 5.2691 seconds
+
+Rust:
+  Status: ✓ Success
+  Execution Time: 3.5316 seconds
+  Wall Clock Time: 3.8422 seconds
+
+C:
+  Status: ✓ Success
+  Execution Time: 1.6460 seconds
+  Wall Clock Time: 3.7348 seconds
+
+SYSTEM INFORMATION:
+----------------------------------------
+OS: Linux 5.15.167.4-microsoft-standard-WSL2
+Architecture: x86_64
+Python Version: 3.11.0rc1
+
+PERFORMANCE ANALYSIS:
+----------------------------------------
+Fastest: 1.6460s
+Slowest: 5.3790s
+Average: 3.8708s
+Range: 3.27x difference
+
+============================================================

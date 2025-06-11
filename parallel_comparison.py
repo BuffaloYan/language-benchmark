@@ -144,13 +144,13 @@ def compile_go():
     """Compile Go implementations"""
     print("[COMPILE] Compiling Go implementations...")
     try:
-        # Compile original Go implementation
+        # Compile parallel Go implementation
         result = subprocess.run(
-            ["go", "build", "-o", "go/mergesort_go", "go/mergesort.go"], 
+            ["go", "build", "-o", "go/parallel_mergesort_go", "go/parallel_mergesort.go"], 
             capture_output=True, text=True, timeout=30, encoding='utf-8', errors='replace'
         )
         if result.returncode != 0:
-            print(f"[ERROR] Go (original) compilation failed: {result.stderr}")
+            print(f"[ERROR] Go (parallel) compilation failed: {result.stderr}")
             return False
         
         # Compile optimized Go implementation
@@ -231,152 +231,134 @@ def compile_rust():
 def generate_parallel_report(results, sys_info, successful_results):
     """Generate a detailed text report of parallel benchmark results"""
     report = []
-    report.append("="*80)
-    report.append("PARALLEL vs SEQUENTIAL PERFORMANCE COMPARISON REPORT")
-    report.append("="*80)
+    report.append("=" * 80)
+    report.append("PARALLEL IMPLEMENTATION COMPARISON REPORT")
+    report.append("=" * 80)
     report.append(f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-    report.append(f"System Info: {sys_info['platform']} | {sys_info['cpu_cores']} CPU cores | Python {sys_info['python_version']}")
+    report.append(f"Test Data: 10,000,000 random integers")
+    report.append(f"Task: Parallel merge sort + prime counting")
+    report.append(f"System: {sys_info['cpu_cores']} CPU cores, {sys_info['platform']}")
     report.append("")
     
-    # Performance summary table
-    report.append("PERFORMANCE SUMMARY")
-    report.append("-" * 50)
-    report.append(f"{'Implementation':<25} {'Exec Time':<12} {'Wall Time':<12} {'Speedup':<10}")
-    report.append("-" * 60)
-    
-    # Sort by execution time
-    sorted_results = sorted(
-        successful_results.items(), 
-        key=lambda x: x[1]['execution_time']
-    )
-    
-    fastest_time = sorted_results[0][1]['execution_time'] if sorted_results else 0
-    
-    for name, data in sorted_results:
-        exec_time = data['execution_time']
-        wall_time = data['wall_time']
-        speedup = fastest_time / exec_time if exec_time > 0 else 1
+    if successful_results:
+        # Overall Performance Rankings
+        report.append("OVERALL PERFORMANCE RANKINGS:")
+        report.append("-" * 80)
+        report.append(f"{'Rank':<4} {'Implementation':<30} {'Type':<10} {'Exec Time':<12} {'Wall Time':<12} {'Speedup':<8}")
+        report.append("-" * 80)
         
-        report.append(f"{name:<25} {exec_time:>8.2f}s    {wall_time:>8.2f}s    {speedup:>6.2f}x")
-    
-    report.append("")
-    
-    # Parallel efficiency analysis
-    report.append("PARALLEL EFFICIENCY ANALYSIS")
-    report.append("-" * 40)
-    
-    parallel_results = {k: v for k, v in successful_results.items() if 'parallel' in k.lower() or 'fork' in k.lower() or 'worker' in k.lower() or 'sharedarraybuffer' in k.lower() or 'rayon' in k.lower()}
-    sequential_results = {k: v for k, v in successful_results.items() if 'sequential' in k.lower()}
-    
-    # Java analysis
-    java_parallel = next((k for k in parallel_results.keys() if 'Java' in k), None)
-    java_sequential = next((k for k in sequential_results.keys() if 'Java' in k), None)
-    
-    if java_parallel and java_sequential:
-        parallel_time = parallel_results[java_parallel]['execution_time']
-        sequential_time = sequential_results[java_sequential]['execution_time']
-        speedup = sequential_time / parallel_time
-        efficiency = speedup / sys_info['cpu_cores'] * 100
+        sorted_results = sorted(
+            successful_results.items(), 
+            key=lambda x: x[1]['execution_time']
+        )
         
-        report.append("Java Fork-Join Framework:")
-        report.append(f"  Sequential: {sequential_time:.2f}s")
-        report.append(f"  Parallel:   {parallel_time:.2f}s")
-        report.append(f"  Speedup:    {speedup:.2f}x")
-        report.append(f"  Efficiency: {efficiency:.1f}%")
-        report.append("")
-    
-    # C analysis
-    c_parallel = next((k for k in parallel_results.keys() if 'C' in k), None)
-    c_sequential = next((k for k in sequential_results.keys() if 'C' in k), None)
-    
-    if c_parallel and c_sequential:
-        parallel_time = parallel_results[c_parallel]['execution_time']
-        sequential_time = sequential_results[c_sequential]['execution_time']
-        speedup = sequential_time / parallel_time
-        efficiency = speedup / sys_info['cpu_cores'] * 100
+        fastest_time = sorted_results[0][1]['execution_time'] if sorted_results else 0
         
-        report.append("C pthreads:")
-        report.append(f"  Sequential: {sequential_time:.2f}s")
-        report.append(f"  Parallel:   {parallel_time:.2f}s")
-        report.append(f"  Speedup:    {speedup:.2f}x")
-        report.append(f"  Efficiency: {efficiency:.1f}%")
-        report.append("")
-    
-    # Rust analysis
-    rust_parallel = next((k for k in parallel_results.keys() if 'Rust' in k), None)
-    rust_sequential = next((k for k in sequential_results.keys() if 'Rust' in k), None)
-    
-    if rust_parallel and rust_sequential:
-        parallel_time = parallel_results[rust_parallel]['execution_time']
-        sequential_time = sequential_results[rust_sequential]['execution_time']
-        speedup = sequential_time / parallel_time
-        efficiency = speedup / sys_info['cpu_cores'] * 100
-        
-        report.append("Rust Rayon:")
-        report.append(f"  Sequential: {sequential_time:.2f}s")
-        report.append(f"  Parallel:   {parallel_time:.2f}s")
-        report.append(f"  Speedup:    {speedup:.2f}x")
-        report.append(f"  Efficiency: {efficiency:.1f}%")
-        report.append("")
-    
-    # Go algorithm comparison (single-threaded implementations)
-    go_original = next((k for k in successful_results.keys() if 'Go (original)' in k), None)
-    go_optimized = next((k for k in successful_results.keys() if 'Go (optimized)' in k), None)
-    
-    if go_original and go_optimized:
-        original_time = successful_results[go_original]['execution_time']
-        optimized_time = successful_results[go_optimized]['execution_time']
-        
-        if original_time > 0 and optimized_time > 0:
-            improvement = (original_time - optimized_time) / original_time * 100
-            speedup = original_time / optimized_time
+        for i, (name, data) in enumerate(sorted_results):
+            rank = i + 1
+            exec_time = data['execution_time']
+            wall_time = data['wall_time']
+            speedup = fastest_time / exec_time if exec_time > 0 else 1
             
-            report.append("Go Algorithm Comparison (Single-threaded):")
-            report.append(f"  Original:   {original_time:.2f}s (allocating approach)")
-            report.append(f"  Optimized:  {optimized_time:.2f}s (in-place approach)")
-            report.append(f"  Improvement: {improvement:.1f}% ({speedup:.2f}x speedup)")
-            report.append("")
-        else:
-            report.append("Go Algorithm Comparison: Unable to compare (invalid execution times)")
-            report.append("")
-    
-    # JavaScript analysis (compare different parallel approaches)
-    js_sequential = next((k for k in sequential_results.keys() if 'JavaScript' in k), None)
-    js_workers = next((k for k in parallel_results.keys() if 'Workers' in k), None)
-    js_shared = next((k for k in parallel_results.keys() if 'SharedArrayBuffer' in k), None)
-    
-    if js_sequential:
-        sequential_time = sequential_results[js_sequential]['execution_time']
-        report.append("JavaScript Parallel Approaches:")
-        report.append(f"  Sequential: {sequential_time:.2f}s")
+            # Determine if implementation is parallel or sequential
+            impl_type = "Parallel" if (
+                'parallel' in name.lower() or 'fork' in name.lower() or 
+                'worker' in name.lower() or 'sharedarraybuffer' in name.lower() or
+                'rayon' in name.lower() or 'pthreads' in name.lower()
+            ) else "Sequential"
+            
+            report.append(f"{rank:<4} {name:<30} {impl_type:<10} {exec_time:>8.4f}s    {wall_time:>8.4f}s    {speedup:>5.2f}x")
         
-        if js_workers:
-            workers_time = parallel_results[js_workers]['execution_time']
-            workers_speedup = sequential_time / workers_time
-            workers_efficiency = workers_speedup / sys_info['cpu_cores'] * 100
-            report.append(f"  Workers:    {workers_time:.2f}s (speedup: {workers_speedup:.2f}x, efficiency: {workers_efficiency:.1f}%)")
-        
-        if js_shared:
-            shared_time = parallel_results[js_shared]['execution_time']
-            shared_speedup = sequential_time / shared_time
-            shared_efficiency = shared_speedup / sys_info['cpu_cores'] * 100
-            report.append(f"  SharedArrayBuffer: {shared_time:.2f}s (speedup: {shared_speedup:.2f}x, efficiency: {shared_efficiency:.1f}%)")
-        
-        report.append("")
+        # Parallel vs Sequential Analysis
+        report.append("\nPARALLEL EFFICIENCY ANALYSIS:")
+        report.append("-" * 80)
     
-    # Detailed results section
-    report.append("DETAILED RESULTS")
-    report.append("-" * 20)
+        
+        parallel_results = {k: v for k, v in successful_results.items() 
+                          if 'parallel' in k.lower() or 'fork' in k.lower() or 
+                             'worker' in k.lower() or 'sharedarraybuffer' in k.lower() or
+                             'rayon' in k.lower() or 'pthreads' in k.lower()}
+        sequential_results = {k: v for k, v in successful_results.items() 
+                            if 'sequential' in k.lower()}
+        
+        # Language-specific analysis
+        languages = ['Java', 'C', 'Rust', 'JavaScript']
+        
+        for lang in languages:
+            parallel_impl = next((k for k in parallel_results.keys() if lang in k), None)
+            sequential_impl = next((k for k in sequential_results.keys() if lang in k), None)
+            
+            if parallel_impl and sequential_impl:
+                parallel_time = parallel_results[parallel_impl]['execution_time']
+                sequential_time = sequential_results[sequential_impl]['execution_time']
+                speedup = sequential_time / parallel_time if parallel_time > 0 else 0
+                efficiency = (speedup / sys_info['cpu_cores']) * 100 if sys_info['cpu_cores'] > 0 else 0
+                
+                report.append(f"\n{lang}:")
+                report.append(f"  Parallel Implementation: {parallel_impl}")
+                report.append(f"  Sequential Time:  {sequential_time:>8.4f}s")
+                report.append(f"  Parallel Time:    {parallel_time:>8.4f}s")
+                report.append(f"  Speedup:          {speedup:>8.2f}x")
+                report.append(f"  Parallel Efficiency: {efficiency:>5.1f}%")
+        
+        # JavaScript parallel approaches comparison
+        js_sequential = next((k for k in sequential_results.keys() if 'JavaScript' in k), None)
+        js_workers = next((k for k in parallel_results.keys() if 'Workers' in k), None)
+        js_shared = next((k for k in parallel_results.keys() if 'SharedArrayBuffer' in k), None)
+        
+        if js_sequential and (js_workers or js_shared):
+            sequential_time = sequential_results[js_sequential]['execution_time']
+            report.append(f"\nJavaScript Parallel Approaches Comparison:")
+            report.append(f"  Sequential:       {sequential_time:>8.4f}s (baseline)")
+            
+            if js_workers:
+                workers_time = parallel_results[js_workers]['execution_time']
+                workers_speedup = sequential_time / workers_time if workers_time > 0 else 0
+                workers_efficiency = (workers_speedup / sys_info['cpu_cores']) * 100
+                report.append(f"  Worker Threads:   {workers_time:>8.4f}s (speedup: {workers_speedup:.2f}x, efficiency: {workers_efficiency:.1f}%)")
+            
+            if js_shared:
+                shared_time = parallel_results[js_shared]['execution_time']
+                shared_speedup = sequential_time / shared_time if shared_time > 0 else 0
+                shared_efficiency = (shared_speedup / sys_info['cpu_cores']) * 100
+                report.append(f"  SharedArrayBuffer: {shared_time:>8.4f}s (speedup: {shared_speedup:.2f}x, efficiency: {shared_efficiency:.1f}%)")
+    
+        
+        # Go parallel vs sequential comparison
+        go_parallel = next((k for k in successful_results.keys() if 'Go Parallel' in k), None)
+        go_optimized = next((k for k in successful_results.keys() if 'Go (optimized)' in k), None)
+        
+        if go_parallel and go_optimized:
+            parallel_time = successful_results[go_parallel]['execution_time']
+            sequential_time = successful_results[go_optimized]['execution_time']
+            speedup = sequential_time / parallel_time if parallel_time > 0 else 0
+            efficiency = (speedup / sys_info['cpu_cores']) * 100 if sys_info['cpu_cores'] > 0 else 0
+            
+            report.append(f"\nGo Parallel vs Sequential Comparison:")
+            report.append(f"  Sequential (optimized): {sequential_time:>8.4f}s (in-place algorithm)")
+            report.append(f"  Parallel (goroutines):  {parallel_time:>8.4f}s (parallel merge sort)")
+            report.append(f"  Speedup:               {speedup:>8.2f}x")
+            report.append(f"  Parallel Efficiency:   {efficiency:>8.1f}%")
+    
+    
+    # Detailed Results
+    report.append("\nDETAILED RESULTS:")
+    report.append("-" * 80)
     
     for name, data in results.items():
         report.append(f"\n{name}:")
         if data.get('success', False):
             report.append(f"  Status: SUCCESS")
-            report.append(f"  Execution Time: {data['execution_time']:.3f}s")
-            report.append(f"  Wall Time: {data['wall_time']:.3f}s")
-            if data.get('parallelism_info'):
-                for key, value in data['parallelism_info'].items():
-                    report.append(f"  {key.title()}: {value}")
+            report.append(f"  Execution Time: {data['execution_time']:>8.4f} seconds")
+            report.append(f"  Wall Clock Time: {data['wall_time']:>8.4f} seconds")
+            if 'parallelism_info' in data and data['parallelism_info']:
+                info = data['parallelism_info']
+                if 'cores' in info:
+                    report.append(f"  CPU Cores Used: {info['cores']}")
+                if 'workers' in info:
+                    report.append(f"  Workers/Threads: {info['workers']}")
+                if 'parallelism' in info:
+                    report.append(f"  Parallelism Level: {info['parallelism']}")
         else:
             report.append(f"  Status: FAILED")
             if 'error' in data:
@@ -384,10 +366,55 @@ def generate_parallel_report(results, sys_info, successful_results):
             if 'timeout' in data:
                 report.append(f"  Timeout: {data['timeout']}s")
     
-    report.append("")
-    report.append("="*80)
-    report.append("END OF REPORT")
-    report.append("="*80)
+    # Performance Summary
+    if successful_results:
+        report.append("\nPERFORMANCE SUMMARY:")
+        report.append("-" * 80)
+        
+        times = [data['execution_time'] for data in successful_results.values()]
+        wall_times = [data['wall_time'] for data in successful_results.values()]
+        
+        fastest_exec = min(times)
+        slowest_exec = max(times)
+        avg_exec = sum(times) / len(times)
+        fastest_wall = min(wall_times)
+        slowest_wall = max(wall_times)
+        avg_wall = sum(wall_times) / len(wall_times)
+        
+        report.append(f"Execution Times:")
+        report.append(f"  Fastest: {fastest_exec:>8.4f}s")
+        report.append(f"  Slowest: {slowest_exec:>8.4f}s")
+        report.append(f"  Average: {avg_exec:>8.4f}s")
+        if fastest_exec > 0:
+            report.append(f"  Range:   {slowest_exec/fastest_exec:>8.2f}x difference")
+        else:
+            report.append(f"  Range:   Unable to calculate (fastest time is 0)")
+        report.append(f"")
+        report.append(f"Wall Clock Times:")
+        report.append(f"  Fastest: {fastest_wall:>8.4f}s")
+        report.append(f"  Slowest: {slowest_wall:>8.4f}s")
+        report.append(f"  Average: {avg_wall:>8.4f}s")
+        if fastest_wall > 0:
+            report.append(f"  Range:   {slowest_wall/fastest_wall:>8.2f}x difference")
+        else:
+            report.append(f"  Range:   Unable to calculate (fastest time is 0)")
+    
+    # System Information
+    report.append("\nSYSTEM INFORMATION:")
+    report.append("-" * 80)
+    report.append(f"CPU Cores: {sys_info['cpu_cores']}")
+    report.append(f"Platform: {sys_info['platform']}")
+    try:
+        import platform
+        report.append(f"OS: {platform.system()} {platform.release()}")
+        report.append(f"Architecture: {platform.machine()}")
+        report.append(f"Python Version: {platform.python_version()}")
+    except:
+        report.append("Additional system info unavailable")
+    
+    report.append("\n" + "=" * 80)
+    report.append("End of Report")
+    report.append("=" * 80)
     
     return '\n'.join(report)
 
@@ -441,12 +468,17 @@ def main():
     tests.append(("JavaScript Workers", ["node", "javascript/parallel_javascript.js", args.data_file]))
     tests.append(("JavaScript SharedArrayBuffer", ["node", "javascript/parallel_sharedarraybuffer.js", args.data_file]))
     
+    # Add Go parallel implementation
+    if go_enabled:
+        import platform
+        go_parallel_binary = "./go/parallel_mergesort_go.exe" if platform.system() == "Windows" else "./go/parallel_mergesort_go"
+        tests.append(("Go Parallel", [go_parallel_binary, args.data_file]))
+    
     # Add sequential versions for comparison
     if java_enabled:
         tests.append(("Java Sequential", ["java", "-cp", "java", "MergeSort", args.data_file]))
     
     if go_enabled:
-        tests.append(("Go (original)", ["./go/mergesort_go", args.data_file]))
         tests.append(("Go (optimized)", ["./go/mergesort_go_optimized", args.data_file]))
     
     if c_enabled:

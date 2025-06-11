@@ -1,0 +1,8 @@
+{
+  "timestamp": "20250610_044718",
+  "hostname": "ip-172-31-0-85.ec2.internal",
+  "s3_bucket": "benchmark-results-484907510442-us-east-1",
+  "s3_prefix": "benchmark-results/20250610_044718_ip-172-31-0-85.ec2.internal",
+  "upload_time": "2025-06-10T04:47:19+00:00",
+  "aws_region": "us-east-1"
+}

@@ -117,6 +117,7 @@ RUN cd /benchmark && ls -la java/*.class
 # Build Go programs
 RUN cd /benchmark && go build -o go/mergesort_go go/mergesort.go
 RUN cd /benchmark && go build -o go/mergesort_go_optimized go/mergesort_optimized.go
+RUN cd /benchmark && go build -o go/parallel_mergesort_go go/parallel_mergesort.go
 
 # Build Rust programs with optimizations
 RUN cd /benchmark && rustc -O rust/mergesort.rs -o rust/mergesort_rust

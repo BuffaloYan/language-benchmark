@@ -1,0 +1,117 @@
+================================================================================
+PARALLEL vs SEQUENTIAL PERFORMANCE COMPARISON REPORT
+================================================================================
+Generated: 2025-06-10 04:47:17
+System Info: Linux | 4 CPU cores | Python 3.11.0
+
+PERFORMANCE SUMMARY
+--------------------------------------------------
+Implementation            Exec Time    Wall Time    Speedup   
+------------------------------------------------------------
+C pthreads                    1.48s        1.99s      1.00x
+Rust Rayon                    2.56s        2.97s      0.58x
+Java Fork-Join                2.57s        4.48s      0.58x
+JavaScript SharedArrayBuffer     3.75s        7.38s      0.40x
+C Sequential                  3.83s        4.34s      0.39x
+Rust Sequential               4.17s        4.57s      0.36x
+Java Sequential               5.42s        7.22s      0.27x
+JavaScript Sequential         8.16s       11.92s      0.18x
+Go (optimized)                9.90s       11.43s      0.15x
+JavaScript Workers            9.94s       13.58s      0.15x
+Go (original)                10.53s       12.10s      0.14x
+
+PARALLEL EFFICIENCY ANALYSIS
+----------------------------------------
+Java Fork-Join Framework:
+  Sequential: 5.42s
+  Parallel:   2.57s
+  Speedup:    2.11x
+  Efficiency: 52.6%
+
+Rust Rayon:
+  Sequential: 4.17s
+  Parallel:   2.56s
+  Speedup:    1.63x
+  Efficiency: 40.6%
+
+Go Algorithm Comparison (Single-threaded):
+  Original:   10.53s (allocating approach)
+  Optimized:  9.90s (in-place approach)
+  Improvement: 6.0% (1.06x speedup)
+
+JavaScript Parallel Approaches:
+  Sequential: 8.16s
+  Workers:    9.94s (speedup: 0.82x, efficiency: 20.5%)
+  SharedArrayBuffer: 3.75s (speedup: 2.17x, efficiency: 54.4%)
+
+DETAILED RESULTS
+--------------------
+
+Java Fork-Join:
+  Status: SUCCESS
+  Execution Time: 2.574s
+  Wall Time: 4.479s
+  Cores: 4
+  Parallelism: 4
+  Steal_Count: 19
+
+C pthreads:
+  Status: SUCCESS
+  Execution Time: 1.483s
+  Wall Time: 1.994s
+  Cores: 4
+
+Rust Rayon:
+  Status: SUCCESS
+  Execution Time: 2.564s
+  Wall Time: 2.972s
+  Cores: 4
+  Workers: 4
+
+JavaScript Workers:
+  Status: SUCCESS
+  Execution Time: 9.939s
+  Wall Time: 13.582s
+  Cores: 4
+  Workers: 4
+
+JavaScript SharedArrayBuffer:
+  Status: SUCCESS
+  Execution Time: 3.752s
+  Wall Time: 7.380s
+  Cores: 4
+  Workers: 4
+
+Java Sequential:
+  Status: SUCCESS
+  Execution Time: 5.420s
+  Wall Time: 7.218s
+
+Go (original):
+  Status: SUCCESS
+  Execution Time: 10.533s
+  Wall Time: 12.096s
+
+Go (optimized):
+  Status: SUCCESS
+  Execution Time: 9.899s
+  Wall Time: 11.426s
+
+C Sequential:
+  Status: SUCCESS
+  Execution Time: 3.832s
+  Wall Time: 4.337s
+
+Rust Sequential:
+  Status: SUCCESS
+  Execution Time: 4.166s
+  Wall Time: 4.571s
+
+JavaScript Sequential:
+  Status: SUCCESS
+  Execution Time: 8.158s
+  Wall Time: 11.916s
+
+================================================================================
+END OF REPORT
+================================================================================

@@ -304,9 +304,10 @@ def generate_parallel_report(results, sys_info, successful_results):
         # JavaScript parallel approaches comparison
         js_sequential = next((k for k in sequential_results.keys() if 'JavaScript' in k), None)
         js_workers = next((k for k in parallel_results.keys() if 'Workers' in k), None)
-        js_shared = next((k for k in parallel_results.keys() if 'SharedArrayBuffer' in k), None)
+        js_shared = next((k for k in parallel_results.keys() if 'SharedArrayBuffer' in k and 'Optimized' not in k), None)
+        js_shared_opt = next((k for k in parallel_results.keys() if 'SharedArrayBuffer (Optimized)' in k), None)
         
-        if js_sequential and (js_workers or js_shared):
+        if js_sequential and (js_workers or js_shared or js_shared_opt):
             sequential_time = sequential_results[js_sequential]['execution_time']
             report.append(f"\nJavaScript Parallel Approaches Comparison:")
             report.append(f"  Sequential:       {sequential_time:>8.4f}s (baseline)")
@@ -322,6 +323,18 @@ def generate_parallel_report(results, sys_info, successful_results):
                 shared_speedup = sequential_time / shared_time if shared_time > 0 else 0
                 shared_efficiency = (shared_speedup / sys_info['cpu_cores']) * 100
                 report.append(f"  SharedArrayBuffer: {shared_time:>8.4f}s (speedup: {shared_speedup:.2f}x, efficiency: {shared_efficiency:.1f}%)")
+            
+            if js_shared_opt:
+                shared_opt_time = parallel_results[js_shared_opt]['execution_time']
+                shared_opt_speedup = sequential_time / shared_opt_time if shared_opt_time > 0 else 0
+                shared_opt_efficiency = (shared_opt_speedup / sys_info['cpu_cores']) * 100
+                report.append(f"  SharedArrayBuffer (Opt): {shared_opt_time:>8.4f}s (speedup: {shared_opt_speedup:.2f}x, efficiency: {shared_opt_efficiency:.1f}%)")
+                
+                # Compare optimization impact
+                if js_shared:
+                    improvement = (shared_time - shared_opt_time) / shared_time * 100 if shared_time > 0 else 0
+                    speedup_ratio = shared_time / shared_opt_time if shared_opt_time > 0 else 1
+                    report.append(f"  Optimization Impact: {improvement:.1f}% improvement ({speedup_ratio:.2f}x faster)")
     
         
         # Go parallel vs sequential comparison
@@ -467,6 +480,7 @@ def main():
     
     tests.append(("JavaScript Workers", ["node", "javascript/parallel_javascript.js", args.data_file]))
     tests.append(("JavaScript SharedArrayBuffer", ["node", "javascript/parallel_sharedarraybuffer.js", args.data_file]))
+    tests.append(("JavaScript SharedArrayBuffer(O)", ["node", "javascript/parallel_sharedarraybuffer_optimized.js", args.data_file]))
     
     # Add Go parallel implementation
     if go_enabled:
@@ -602,7 +616,8 @@ def main():
         # JavaScript analysis (compare different parallel approaches)
         js_sequential = next((k for k in sequential_results.keys() if 'JavaScript' in k), None)
         js_workers = next((k for k in parallel_results.keys() if 'Workers' in k), None)
-        js_shared = next((k for k in parallel_results.keys() if 'SharedArrayBuffer' in k), None)
+        js_shared = next((k for k in parallel_results.keys() if 'SharedArrayBuffer' in k and 'Optimized' not in k), None)
+        js_shared_opt = next((k for k in parallel_results.keys() if 'SharedArrayBuffer (Optimized)' in k), None)
         
         if js_sequential:
             sequential_time = sequential_results[js_sequential]['execution_time']
@@ -620,6 +635,18 @@ def main():
                 shared_speedup = sequential_time / shared_time
                 shared_efficiency = shared_speedup / sys_info['cpu_cores'] * 100
                 print(f"  SharedArrayBuffer: {shared_time:.2f}s (speedup: {shared_speedup:.2f}x, efficiency: {shared_efficiency:.1f}%)")
+            
+            if js_shared_opt:
+                shared_opt_time = parallel_results[js_shared_opt]['execution_time']
+                shared_opt_speedup = sequential_time / shared_opt_time
+                shared_opt_efficiency = shared_opt_speedup / sys_info['cpu_cores'] * 100
+                print(f"  SharedArrayBuffer (Opt): {shared_opt_time:.2f}s (speedup: {shared_opt_speedup:.2f}x, efficiency: {shared_opt_efficiency:.1f}%)")
+                
+                # Compare optimized vs original
+                if js_shared:
+                    improvement = (shared_time - shared_opt_time) / shared_time * 100
+                    speedup_improvement = shared_opt_time / shared_time if shared_time > 0 else 1
+                    print(f"  Optimization Impact: {improvement:.1f}% faster ({speedup_improvement:.2f}x speedup)")
             
             print()
         
